@@ -16,11 +16,11 @@
 
 package unit.controllers
 
+import controllers.Binders
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatest.OptionValues
 import uk.gov.hmrc.domain.Nino
-import uk.gov.hmrc.payedesstub.controllers.Binders
 
 class NinoBinderSpec extends AnyWordSpecLike with Matchers with OptionValues {
 

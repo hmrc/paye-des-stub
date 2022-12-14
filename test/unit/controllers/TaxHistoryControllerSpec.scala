@@ -18,6 +18,8 @@ package unit.controllers
 
 import akka.stream.Materializer
 import common.LogSuppressing
+import controllers.TaxHistoryController
+import models.{InvalidScenarioException, TaxHistory, TaxYear}
 import org.mockito.ArgumentMatchers.{any, anyString, eq => mEq}
 import org.mockito.BDDMockito.given
 import org.scalatest.concurrent.ScalaFutures
@@ -29,12 +31,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{stubControllerComponents, _}
+import play.api.test.Helpers._
+import services.{ScenarioLoader, TaxHistoryService}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.payedesstub.controllers.TaxHistoryController
-import uk.gov.hmrc.payedesstub.models._
-import uk.gov.hmrc.payedesstub.services.{ScenarioLoader, TaxHistoryService}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

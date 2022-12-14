@@ -18,6 +18,8 @@ package unit.controllers
 
 import akka.stream.Materializer
 import common.LogSuppressing
+import controllers.IndividualIncomeController
+import models.{ExtendedStateBenefits, IndividualIncome, IndividualIncomeResponse, InvalidScenarioException, TaxYear}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
@@ -31,11 +33,9 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.{IndividualIncomeSummaryService, ScenarioLoader}
 import uk.gov.hmrc.domain.SaUtr
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.payedesstub.controllers.IndividualIncomeController
-import uk.gov.hmrc.payedesstub.models._
-import uk.gov.hmrc.payedesstub.services.{IndividualIncomeSummaryService, ScenarioLoader}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -22,7 +22,7 @@ lazy val microservice = (project in file("."))
     scalaVersion := "2.12.16",
     publishingSettings,
     retrieveManaged := true,
-    routesImport += "uk.gov.hmrc.payedesstub.controllers.Binders._",
+    routesImport += "controllers.Binders._",
     resolvers += Resolver.jcenterRepo,
     PlayKeys.playDefaultPort := 9689,
     Test / javaOptions += "-Dconfig.resource=test.application.conf",
@@ -34,7 +34,7 @@ lazy val microservice = (project in file("."))
     coverageMinimumStmtTotal := 80,
     coverageFailOnMinimum := true,
     coverageExcludedPackages :=
-      "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;live.*;uk.gov.hmrc.BuildInfo;uk.gov.hmrc.payedesstub.config",
+      "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;live.*;uk.gov.hmrc.BuildInfo;config",
     addTestReportOption(IntegrationTest, "int-test-reports")
   )
 scalacOptions ++= Seq(

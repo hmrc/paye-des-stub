@@ -18,6 +18,8 @@ package unit.controllers
 
 import akka.stream.Materializer
 import common.LogSuppressing
+import controllers.IndividualTaxController
+import models.{IndividualTax, IndividualTaxResponse, InvalidScenarioException, Refund, StateBenefits, TaxYear}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
@@ -30,12 +32,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{stubControllerComponents, _}
+import play.api.test.Helpers._
+import services.{IndividualTaxSummaryService, ScenarioLoader}
 import uk.gov.hmrc.domain.SaUtr
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.payedesstub.controllers.IndividualTaxController
-import uk.gov.hmrc.payedesstub.models._
-import uk.gov.hmrc.payedesstub.services.{IndividualTaxSummaryService, ScenarioLoader}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

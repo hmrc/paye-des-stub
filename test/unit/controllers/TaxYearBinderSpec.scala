@@ -16,11 +16,11 @@
 
 package unit.controllers
 
+import controllers.Binders
+import models.TaxYear
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import uk.gov.hmrc.payedesstub.controllers.Binders
-import uk.gov.hmrc.payedesstub.models.TaxYear
 
 class TaxYearBinderSpec extends AnyWordSpecLike with Matchers with OptionValues {
 

@@ -16,11 +16,11 @@
 
 package unit.controllers
 
+import controllers.Binders
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatest.OptionValues
 import uk.gov.hmrc.domain.SaUtr
-import uk.gov.hmrc.payedesstub.controllers.Binders
 
 class UtrBinderSpec extends AnyWordSpecLike with Matchers with OptionValues {
 
