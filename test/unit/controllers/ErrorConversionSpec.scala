@@ -16,33 +16,21 @@
 
 package unit.controllers
 
-import controllers.Binders
+import controllers.ErrorConversion
+import models.ErrorResponse
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import org.scalatest.OptionValues
-import uk.gov.hmrc.domain.SaUtr
+import play.api.http.Status.NOT_ACCEPTABLE
+import play.api.libs.json.Json
+import play.api.mvc.Results.Status
 
-class UtrBinderSpec extends AnyWordSpecLike with Matchers with OptionValues {
+class ErrorConversionSpec extends AnyWordSpecLike with Matchers with ErrorConversion {
 
-  "a valid utr '2234567890'" should {
-    "be transformed to an SaUtr object" in {
-      val utr = "2234567890"
-      Binders.saUtrBinder.bind("utr", utr) shouldBe Right(SaUtr(utr))
+  "ErrorConversion" should {
+    "convert errorResponse to the correct error JSON response" in {
+      val errorResponse = ErrorResponse(NOT_ACCEPTABLE, "ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
+
+      toResult(errorResponse) shouldBe Status(NOT_ACCEPTABLE)(Json.toJson(errorResponse))
     }
   }
-
-  "unbinding a SaUtr object" should {
-    "result in a utr" in {
-      val utr = "1097172564"
-      Binders.saUtrBinder.unbind("utr", SaUtr(utr)) shouldBe utr
-    }
-  }
-
-  "an invalid utr 'invalid'" should {
-    "be transformed to a String error message" in {
-      val utr = "invalid"
-      Binders.saUtrBinder.bind("utr", utr) shouldBe Left("ERROR_SA_UTR_INVALID")
-    }
-  }
-
 }

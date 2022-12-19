@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package services
+package unit.models
 
-import models.{TaxHistory, TaxYear}
-import repositories.TaxHistoryRepository
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.domain.Nino
+import models.{ErrorAcceptHeaderInvalid, ErrorResponse}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.Json
 
-import scala.concurrent.Future
+class ErrorResponseSpec extends AnyWordSpec with Matchers {
+  "ErrorResponse" should {
+    "be translated to error Json with only the required fields" in {
+      Json.toJson[ErrorResponse](ErrorAcceptHeaderInvalid).toString() shouldBe
+        """{"code":"ACCEPT_HEADER_INVALID","message":"The accept header is missing or invalid"}"""
+    }
+  }
 
-@Singleton
-class TaxHistoryService @Inject() (val repository: TaxHistoryRepository) {
-
-  def create(nino: Nino, taxYear: TaxYear, taxHistoryResponse: String): Future[TaxHistory] =
-    repository.store(TaxHistory(nino.nino, taxYear.startYr, taxHistoryResponse))
-
-  def fetch(nino: Nino, taxYear: Int): Future[Option[TaxHistory]] =
-    repository.fetch(nino.nino, taxYear.toString)
 }

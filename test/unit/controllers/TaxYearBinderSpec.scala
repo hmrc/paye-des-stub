@@ -31,6 +31,13 @@ class TaxYearBinderSpec extends AnyWordSpecLike with Matchers with OptionValues 
     }
   }
 
+  "unbinding a TaxYear object" should {
+    "result in a tax year string" in {
+      val ty = "2014-15"
+      Binders.taxYearBinder.unbind("taxYear", TaxYear(ty)) shouldBe ty
+    }
+  }
+
   "an invalid tax year 'invalid tax year'" should {
     "be transformed to a String error message" in {
       val ty = "invalid tax year"

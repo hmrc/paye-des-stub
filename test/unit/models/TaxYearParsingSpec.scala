@@ -14,6 +14,24 @@
  * limitations under the License.
  */
 
-package models
+package unit.models
 
-case class TaxHistory(nino: String, taxYear: String, taxHistoryResponse: String)
+import models.TaxYear
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+class TaxYearParsingSpec extends AnyWordSpec with Matchers {
+
+  "a valid TaxYear" should {
+    "be transformed and startYr should be 2014" in {
+      TaxYear("2014-15").startYr shouldBe "2014"
+    }
+  }
+
+  "a valid TaxYear" should {
+    "be transformed and startYr should be 2015" in {
+      TaxYear("2015-16").startYr shouldBe "2015"
+    }
+  }
+
+}

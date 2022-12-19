@@ -52,7 +52,7 @@ class PlatformIntegrationSpec
     .in(Mode.Test)
     .build()
 
-  "microservice" should {
+  "paye-des-stub" should {
 
     "provide definition endpoint" in {
       val result = route(app, FakeRequest(GET, "/api/definition")).get

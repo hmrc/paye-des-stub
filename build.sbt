@@ -7,7 +7,7 @@ lazy val appName = "paye-des-stub"
 def unitFilter(name: String): Boolean   = name startsWith "unit"
 def itTestFilter(name: String): Boolean = name startsWith "it"
 
-lazy val microservice = (project in file("."))
+lazy val microservice = Project(appName, file("."))
   .settings(defaultSettings())
   .settings(Compile / unmanagedResourceDirectories += baseDirectory.value / "resources")
   .settings(Test / testOptions := Seq(Tests.Filter(unitFilter), Tests.Argument(TestFrameworks.ScalaTest, "-eT")))
@@ -31,14 +31,15 @@ lazy val microservice = (project in file("."))
     IntegrationTest / testOptions := Seq(Tests.Filter(itTestFilter), Tests.Argument(TestFrameworks.ScalaTest, "-eT")),
     IntegrationTest / unmanagedSourceDirectories := (IntegrationTest / baseDirectory)(base => Seq(base / "test")).value,
     libraryDependencies ++= AppDependencies(),
-    coverageMinimumStmtTotal := 80,
+    coverageMinimumStmtTotal := 99,
     coverageFailOnMinimum := true,
     coverageExcludedPackages :=
       "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;live.*;uk.gov.hmrc.BuildInfo;config",
     addTestReportOption(IntegrationTest, "int-test-reports")
   )
 scalacOptions ++= Seq(
-  "-P:silencer:pathFilters=views;routes"
+  "-Wconf:src=routes/.*:s",
+  "-Wconf:cat=unused-imports&src=views/.*:s"
 )
 
 addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt test:scalafmt")

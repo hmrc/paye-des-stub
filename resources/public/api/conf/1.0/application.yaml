@@ -100,6 +100,8 @@ paths:
                   employerName: Company ABC
                   offPayrollWorkFlag: false
       deprecated: false
+      security:
+        - application-restricted: []
   /individual-paye-test-support/sa/{utr}/income/annual-summary/{taxYear}:
     post:
       tags:
@@ -142,6 +144,8 @@ paths:
                 - employerPayeReference: 456/AB456
                   payFromEmployment: 8650
       deprecated: false
+      security:
+        - application-restricted: []
   /individual-paye-test-support/sa/{utr}/tax/annual-summary/{taxYear}:
     post:
       tags:
@@ -184,6 +188,8 @@ paths:
                 - employerPayeReference: 456/AB456
                   taxTakenOffPay: 224.99
       deprecated: false
+      security:
+        - application-restricted: []
 components:
   parameters:
     utr:
@@ -241,6 +247,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://test-api.service.hmrc.gov.uk/oauth/token
+          scopes: {}
   schemas:
     errorResponse:
       title: errorResponse

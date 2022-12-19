@@ -116,4 +116,4 @@ curl -X GET http://localhost:9689/tax-history/AA000001A/2017/all-details
 - Ensure to uncomment the lines [here](https://github.com/hmrc/paye-des-stub/blob/main/conf/application.conf#L40-L43) in case of CORS errors
 
 ### On Developer Hub
-Full documentation can be found on the [Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-tax/1.1).
+Full documentation can be found on the [Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-tax).

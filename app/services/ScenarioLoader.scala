@@ -21,7 +21,6 @@ import javax.inject.Singleton
 import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.Future
-import scala.io.Source
 
 @Singleton
 class ScenarioLoader {
@@ -35,16 +34,6 @@ class ScenarioLoader {
       Future.failed(new InvalidScenarioException(scenario))
     } else {
       Future.successful(Json.parse(resource).as[T])
-    }
-  }
-
-  def loadScenarioRaw(api: String, scenario: String): Future[String] = {
-    val resource = getClass.getResourceAsStream(pathForScenario(api, scenario))
-
-    if (resource == null) {
-      Future.failed(new InvalidScenarioException(scenario))
-    } else {
-      Future.successful(Source.fromInputStream(resource).mkString)
     }
   }
 

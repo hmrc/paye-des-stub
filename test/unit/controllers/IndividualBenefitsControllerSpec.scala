@@ -21,12 +21,11 @@ import controllers.IndividualBenefitsController
 import models.{IndividualBenefits, IndividualBenefitsResponse, InvalidScenarioException, TaxYear}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.verify
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatest.OptionValues
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
@@ -34,7 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.{IndividualBenefitsSummaryService, ScenarioLoader}
 import uk.gov.hmrc.domain.SaUtr
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{GatewayTimeoutException, HeaderCarrier}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -75,7 +74,7 @@ class IndividualBenefitsControllerSpec
   }
 
   "fetch" should {
-    "return 200 (Ok) with the happy path response when called with a utr and taxYear that are found" in new Setup {
+    "return 200 (OK) with the happy path response when called with a utr and taxYear that are found" in new Setup {
 
       given(underTest.service.fetch(validUtrString, validTaxYearString))
         .willReturn(Future(Some(IndividualBenefits("", "", IndividualBenefitsResponse(Nil)))))
@@ -87,7 +86,7 @@ class IndividualBenefitsControllerSpec
       contentAsJson(result) shouldBe Json.toJson(individualBenefitsResponse)
     }
 
-    "return 404 (NotFound) when called with a utr and taxYear that are not found" in new Setup {
+    "return 404 (NOT_FOUND) when called with a utr and taxYear that are not found" in new Setup {
 
       given(underTest.service.fetch(validUtrString, validTaxYearString)).willReturn(Future(None))
 
@@ -95,6 +94,31 @@ class IndividualBenefitsControllerSpec
         Future(underTest.find(validUtrString, validTaxYearString)(createIndividualBenefitsRequest)).futureValue
 
       status(result) shouldBe NOT_FOUND
+    }
+
+    "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
+
+      given(underTest.scenarioLoader.loadScenario[IndividualBenefitsResponse](anyString, anyString)(any()))
+        .willReturn(Future.successful(individualBenefitsResponse))
+      given(underTest.service.create(anyString, anyString, any[IndividualBenefitsResponse]))
+        .willReturn(Future.successful(individualBenefits))
+
+      val result: Future[Result] = Future(
+        underTest.create(utr, taxYear)(emptyRequest.withHeaders("Accept" -> "application/vnd.hmrc.0.9+json"))
+      ).futureValue
+
+      status(result) shouldBe NOT_ACCEPTABLE
+    }
+
+    "return 500 (INTERNAL_SERVER_ERROR) for failure from a GatewayTimeoutException" in new Setup {
+
+      given(underTest.service.fetch(validUtrString, validTaxYearString))
+        .willReturn(Future.failed(new GatewayTimeoutException("Expected timeout")))
+
+      val result: Future[Result] =
+        Future(underTest.find(validUtrString, validTaxYearString)(createIndividualBenefitsRequest)).futureValue
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
     }
   }
 
