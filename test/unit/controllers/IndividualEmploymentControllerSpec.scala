@@ -18,7 +18,7 @@ package unit.controllers
 
 import akka.stream.Materializer
 import controllers.IndividualEmploymentController
-import models.{IndividualEmployment, IndividualEmploymentResponse, InvalidScenarioException, TaxYear}
+import models._
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.BDDMockito.given
 import org.scalatest.concurrent.ScalaFutures
@@ -96,20 +96,6 @@ class IndividualEmploymentControllerSpec
       status(result) shouldBe NOT_FOUND
     }
 
-    "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
-
-      given(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
-        .willReturn(Future.successful(individualEmploymentResponse))
-      given(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
-        .willReturn(Future.successful(individualEmployment))
-
-      val result: Future[Result] = Future(
-        underTest.create(utr, taxYear)(emptyRequest.withHeaders("Accept" -> "application/vnd.hmrc.0.9+json"))
-      ).futureValue
-
-      status(result) shouldBe NOT_ACCEPTABLE
-    }
-
     "return 500 (INTERNAL_SERVER_ERROR) for failure from a GatewayTimeoutException" in new Setup {
 
       given(underTest.service.fetch(validUtrString, validTaxYearString))
@@ -166,6 +152,20 @@ class IndividualEmploymentControllerSpec
         Future(underTest.create(utr, taxYear)(createSummaryRequest("HAPPY_PATH_1"))).futureValue
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+
+    "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
+
+      given(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+        .willReturn(Future.successful(individualEmploymentResponse))
+      given(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
+        .willReturn(Future.successful(individualEmployment))
+
+      val result: Future[Result] = Future(
+        underTest.create(utr, taxYear)(emptyRequest.withHeaders("Accept" -> "application/vnd.hmrc.0.9+json"))
+      ).futureValue
+
+      status(result) shouldBe NOT_ACCEPTABLE
     }
 
     "return a bad request when the scenario is invalid" in new Setup {

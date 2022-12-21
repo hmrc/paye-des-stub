@@ -16,9 +16,9 @@
 
 package repositories
 
-import models.IndividualEmployment
 import javax.inject.{Inject, Singleton}
 import org.mongodb.scala.model.Filters._
+import models._
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
@@ -29,7 +29,7 @@ class IndividualEmploymentRepository @Inject() (mongo: MongoComponent)(implicit 
     extends PlayMongoRepository[IndividualEmployment](
       mongoComponent = mongo,
       collectionName = "individualEmployment",
-      domainFormat = models.formatIndividualEmployment,
+      domainFormat = formatIndividualEmployment,
       indexes = Seq.empty
     ) {
 

@@ -4,20 +4,25 @@ info:
   version: '1.0'
 servers:
   - url: https://test-api.service.hmrc.gov.uk
-    description: Sandbox
-  - url: https://api.service.hmrc.gov.uk
-    description: Production
 paths:
   /individual-paye-test-support/sa/{utr}/benefits/annual-summary/{taxYear}:
     post:
       tags:
       - individual-paye-test-support
       summary: Create benefits summary test data
-      description: Supports the [Individual Benefits API](https://test-developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits#_get-benefits-summary_get_accordion) by creating benefits summary test data.
+      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits) by creating benefits summary test data.
       operationId: createBenefitsSummaryTestData
       parameters:
         - $ref: '#/components/parameters/utr'
-        - $ref: '#/components/parameters/taxYear'
+        - name: taxYear
+          in: path
+          description: The tax year for the benefits test data being created.
+          required: true
+          style: simple
+          schema:
+            pattern: ^[0-9]{4}-[0-9]{2}$
+            type: string
+            example: 2016-17
         - $ref: '#/components/parameters/acceptHeader'
         - $ref: '#/components/parameters/contentTypeHeader'
         - $ref: '#/components/parameters/authorizationHeader'
@@ -66,11 +71,19 @@ paths:
       tags:
       - individual-paye-test-support
       summary: Create employment history test data
-      description: Supports the [Individual Employment API](https://test-developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-employment#_get-employment-history_get_accordion) by creating employment history test data.
+      description: Supports the [Individual Employment API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-employment) by creating employment history test data.
       operationId: createEmploymentHistoryTestData
       parameters:
         - $ref: '#/components/parameters/utr'
-        - $ref: '#/components/parameters/taxYear'
+        - name: taxYear
+          in: path
+          description: The tax year for the employment test data being created.
+          required: true
+          style: simple
+          schema:
+            pattern: ^[0-9]{4}-[0-9]{2}$
+            type: string
+            example: 2016-17
         - $ref: '#/components/parameters/acceptHeader'
         - $ref: '#/components/parameters/contentTypeHeader'
         - $ref: '#/components/parameters/authorizationHeader'
@@ -107,11 +120,19 @@ paths:
       tags:
       - individual-paye-test-support
       summary: Create annual income summary test data
-      description: Supports the [Individual Income API](https://test-developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-income#_get-annual-income-summary_get_accordion) by creating annual income test data.
+      description: Supports the [Individual Income API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-income) by creating annual income test data.
       operationId: createAnnualIncomeSummaryTestData
       parameters:
         - $ref: '#/components/parameters/utr'
-        - $ref: '#/components/parameters/taxYear'
+        - name: taxYear
+          in: path
+          description: The tax year for the income test data being created.
+          required: true
+          style: simple
+          schema:
+            pattern: ^[0-9]{4}-[0-9]{2}$
+            type: string
+            example: 2016-17
         - $ref: '#/components/parameters/acceptHeader'
         - $ref: '#/components/parameters/contentTypeHeader'
         - $ref: '#/components/parameters/authorizationHeader'
@@ -151,11 +172,19 @@ paths:
       tags:
       - individual-paye-test-support
       summary: Create tax summary test data
-      description: Supports the [Individual Tax API](https://test-developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-tax#_get-tax-summary_get_accordion) by creating annual tax test data.
+      description: Supports the [Individual Tax API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-tax) by creating annual tax test data.
       operationId: createTaxSummaryTestData
       parameters:
         - $ref: '#/components/parameters/utr'
-        - $ref: '#/components/parameters/taxYear'
+        - name: taxYear
+          in: path
+          description: The tax year for the tax test data being created.
+          required: true
+          style: simple
+          schema:
+            pattern: ^[0-9]{4}-[0-9]{2}$
+            type: string
+            example: 2016-17
         - $ref: '#/components/parameters/acceptHeader'
         - $ref: '#/components/parameters/contentTypeHeader'
         - $ref: '#/components/parameters/authorizationHeader'
@@ -195,22 +224,12 @@ components:
     utr:
       name: utr
       in: path
-      description: The 10 digit self-assessment UTR for the individual.
+      description: The 10 digit self assessment UTR for the individual.
       required: true
       style: simple
       schema:
         type: string
         example: 2234567890
-    taxYear:
-      name: taxYear
-      in: path
-      description: The tax year for the benefits being retrieved.
-      required: true
-      style: simple
-      schema:
-        pattern: ^[0-9]{4}-[0-9]{2}$
-        type: string
-        example: 2016-17
     acceptHeader:
       name: Accept
       in: header
@@ -235,10 +254,10 @@ components:
       name: Authorization
       in: header
       style: simple
-      description: An [OAuth 2.0 Bearer Token](/api-documentation/docs/authorisation/application-restricted-endpoints)
+      description: An [OAuth 2.0 Bearer Token](/api-documentation/docs/authorisation/application-restricted-endpoints).
       schema:
         type: string
-        example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+        example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
       required: true
   securitySchemes:
     application-restricted:
@@ -249,19 +268,6 @@ components:
           tokenUrl: https://test-api.service.hmrc.gov.uk/oauth/token
           scopes: {}
   schemas:
-    errorResponse:
-      title: errorResponse
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        message:
-          type: string
-          description: The error message
     employmentForIndividualBenefits:
       title: employment
       required:
@@ -388,7 +394,7 @@ components:
           example: 980.45
       description: Tax deducted from pensions, annuities and other state benefits.
     refunds:
-      title: Refunds
+      title: refunds
       type: object
       properties:
         taxRefundedOrSetOff:
@@ -396,7 +402,6 @@ components:
           description: The amount of Income Tax refunded or set off by HMRC or Jobcentre Plus.
           example: 325
     scenario:
-      title: scenario
       enum:
         - HAPPY_PATH_1
       type: string
@@ -406,7 +411,7 @@ components:
       type: object
       properties:
         scenario:
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/scenario'
           description: The scenario to create test data for
       description: Create Individual Benefits summary test data request
@@ -427,7 +432,7 @@ components:
       type: object
       properties:
         scenario:
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/scenario'
           description: The scenario to create test data for
       description: Create Individual Employment summary test data request
@@ -448,7 +453,7 @@ components:
       type: object
       properties:
         scenario:
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/scenario'
           description: The scenario to create test data for
       description: Create Individual Income summary test data request
@@ -460,7 +465,7 @@ components:
       properties:
         pensionsAnnuitiesAndOtherStateBenefits:
           allOf:
-          - $ref: '#/components/schemas/pensionsAnnuitiesAndOtherStateBenefits'
+          - $ref: '#/components/schemas/pensionsAnnuitiesAndOtherStateBenefitsForIndividualIncome'
           - description: Income from pensions, annuities and other state benefits.
         employments:
           type: array
@@ -473,7 +478,7 @@ components:
       type: object
       properties:
         scenario:
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/scenario'
           description: The scenario to create test data for
       description: Create Individual Tax summary test data request

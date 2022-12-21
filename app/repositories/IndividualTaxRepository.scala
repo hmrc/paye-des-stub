@@ -16,7 +16,7 @@
 
 package repositories
 
-import models.IndividualTax
+import models._
 import org.mongodb.scala.model.Filters.{and, equal}
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
@@ -30,7 +30,7 @@ class IndividualTaxRepository @Inject() (mongo: MongoComponent)(implicit ec: Exe
     extends PlayMongoRepository[IndividualTax](
       mongoComponent = mongo,
       collectionName = "individualTax",
-      domainFormat = models.formatIndividualTax,
+      domainFormat = formatIndividualTax,
       indexes = Seq.empty
     ) {
 

@@ -16,12 +16,11 @@
 
 package controllers
 
-import models.{CreateSummaryRequest, IndividualBenefitsResponse, InvalidScenarioException, JsonErrorResponse, TaxYear}
-
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc._
+import models._
 import services.{IndividualBenefitsSummaryService, ScenarioLoader}
 import uk.gov.hmrc.domain.SaUtr
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController

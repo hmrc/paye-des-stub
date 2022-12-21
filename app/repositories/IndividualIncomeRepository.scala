@@ -16,7 +16,7 @@
 
 package repositories
 
-import models.IndividualIncome
+import models._
 import org.mongodb.scala.model.Filters._
 
 import javax.inject.{Inject, Singleton}
@@ -30,7 +30,7 @@ class IndividualIncomeRepository @Inject() (mongo: MongoComponent)(implicit ec: 
     extends PlayMongoRepository[IndividualIncome](
       mongoComponent = mongo,
       collectionName = "individualIncome",
-      domainFormat = models.formatIndividualIncome,
+      domainFormat = formatIndividualIncome,
       indexes = Seq.empty
     ) {
 

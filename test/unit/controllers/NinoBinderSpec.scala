@@ -33,16 +33,16 @@ class NinoBinderSpec extends AnyWordSpecLike with Matchers with OptionValues {
       result shouldBe Right(expectedNino)
     }
 
-    "unbinding a NINO object" should {
-      "result in a tax year string" in {
-        val expectedNino = "AA000000A"
-        Binders.ninoBinder.unbind("nino", Nino(expectedNino)) shouldBe expectedNino
-      }
-    }
-
     "indicate an error when the UTR is invalid" in {
       val result: Either[String, Nino] = Binders.ninoBinder.bind("x", "123")
       result shouldBe Left("ERROR_NINO_INVALID")
+    }
+  }
+
+  "unbinding a NINO object" should {
+    "result in a nino string" in {
+      val expectedNino = "AA000000A"
+      Binders.ninoBinder.unbind("nino", Nino(expectedNino)) shouldBe expectedNino
     }
   }
 }

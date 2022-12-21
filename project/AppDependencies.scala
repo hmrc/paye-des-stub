@@ -9,9 +9,7 @@ object AppDependencies {
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc"       %% "bootstrap-backend-play-28" % bootstrapPlayVersion,
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"        % hmrcMongoPlayVersion,
-    "uk.gov.hmrc"       %% "domain"                    % "8.1.0-play-28",
-    "uk.gov.hmrc"       %% "tax-year"                  % "3.0.0",
-    "uk.gov.hmrc"       %% "hmrc-stubs-core"           % "6.2.0-play-26"
+    "uk.gov.hmrc"       %% "domain"                    % "8.1.0-play-28"
   )
 
   private val test: Seq[ModuleID] = Seq(

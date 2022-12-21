@@ -16,9 +16,9 @@
 
 package repositories
 
-import models.IndividualBenefits
 import org.mongodb.scala.model.Filters._
 import javax.inject.{Inject, Singleton}
+import models._
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.MongoComponent
 
@@ -29,7 +29,7 @@ class IndividualBenefitsRepository @Inject() (mongo: MongoComponent)(implicit ec
     extends PlayMongoRepository[IndividualBenefits](
       mongoComponent = mongo,
       collectionName = "individualBenefits",
-      domainFormat = models.formatIndividualBenefits,
+      domainFormat = formatIndividualBenefits,
       indexes = Seq.empty
     ) {
 

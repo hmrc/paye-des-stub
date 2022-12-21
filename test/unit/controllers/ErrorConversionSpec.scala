@@ -28,7 +28,8 @@ class ErrorConversionSpec extends AnyWordSpecLike with Matchers with ErrorConver
 
   "ErrorConversion" should {
     "convert errorResponse to the correct error JSON response" in {
-      val errorResponse = ErrorResponse(NOT_ACCEPTABLE, "ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
+      val errorResponse =
+        ErrorResponse(NOT_ACCEPTABLE, "ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
 
       toResult(errorResponse) shouldBe Status(NOT_ACCEPTABLE)(Json.toJson(errorResponse))
     }
