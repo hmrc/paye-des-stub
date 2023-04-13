@@ -16,4 +16,4 @@
 
 package models
 
-case class APIAccess(`type`: String, whitelistedApplicationIds: Option[Seq[String]], isTrial: Option[Boolean] = None)
+case class APIAccess(`type`: String)
