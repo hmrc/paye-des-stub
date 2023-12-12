@@ -1,0 +1,10 @@
+{
+  "pensionsAnnuitiesAndOtherStateBenefits": {},
+  "refunds": {},
+  "employments": [
+    {
+      "employerPayeReference": "111/AAA",
+      "taxTakenOffPay": 3000
+    }
+  ]
+}

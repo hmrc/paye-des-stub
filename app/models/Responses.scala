@@ -37,14 +37,14 @@ case class IndividualTaxResponse(
 
 case class IndividualBenefitsEmployment(
   employerPayeReference: String,
-  companyCarsAndVansBenefit: Double,
-  fuelForCompanyCarsAndVansBenefit: Double,
-  privateMedicalDentalInsurance: Double,
-  vouchersCreditCardsExcessMileageAllowance: Double,
-  goodsEtcProvidedByEmployer: Double,
-  accommodationProvidedByEmployer: Double,
-  otherBenefits: Double,
-  expensesPaymentsReceived: Double
+  companyCarsAndVansBenefit: Option[Double],
+  fuelForCompanyCarsAndVansBenefit: Option[Double],
+  privateMedicalDentalInsurance: Option[Double],
+  vouchersCreditCardsExcessMileageAllowance: Option[Double],
+  goodsEtcProvidedByEmployer: Option[Double],
+  accommodationProvidedByEmployer: Option[Double],
+  otherBenefits: Option[Double],
+  expensesPaymentsReceived: Option[Double]
 )
 
 case class IndividualTaxEmployment(employerPayeReference: String, taxTakenOffPay: Double)
@@ -57,16 +57,16 @@ case class IndividualEmploymentEmployment(
   offPayrollWorkFlag: Option[Boolean]
 )
 
-case class StateBenefits(otherPensionsAndRetirementAnnuities: Double, incapacityBenefit: Double)
+case class StateBenefits(otherPensionsAndRetirementAnnuities: Option[Double], incapacityBenefit: Option[Double])
 
 case class ExtendedStateBenefits(
-  otherPensionsAndRetirementAnnuities: Double,
-  incapacityBenefit: Double,
-  jobseekersAllowance: Double,
+  otherPensionsAndRetirementAnnuities: Option[Double],
+  incapacityBenefit: Option[Double],
+  jobseekersAllowance: Option[Double],
   seissNetPaid: Option[Double]
 )
 
-case class Refund(taxRefundedOrSetOff: Double)
+case class Refund(taxRefundedOrSetOff: Option[Double])
 
 object IndividualResponse {
 

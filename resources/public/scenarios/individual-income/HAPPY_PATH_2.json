@@ -1,0 +1,9 @@
+{
+  "pensionsAnnuitiesAndOtherStateBenefits": {},
+  "employments": [
+    {
+      "employerPayeReference": "111/AAA",
+      "payFromEmployment": 25000
+    }
+  ]
+}
