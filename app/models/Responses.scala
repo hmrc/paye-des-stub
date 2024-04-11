@@ -33,7 +33,6 @@ case class IndividualTaxResponse(
   employments: List[IndividualTaxEmployment]
 ) extends IndividualResponse
 
-
 case class IndividualBenefitsEmployment(
   employerPayeReference: String,
   companyCarsAndVansBenefit: Option[Double],
