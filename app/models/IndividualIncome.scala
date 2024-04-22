@@ -17,7 +17,7 @@
 package models
 
 case class IndividualIncome(
-                             utr: String,
-                             taxYear: String,
-                             individualIncomeRespone: IndividualIncomeResponse
-                           )
+  utr: String,
+  taxYear: String,
+  individualIncomeRespone: IndividualIncomeResponse
+)
