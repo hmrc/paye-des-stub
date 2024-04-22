@@ -34,9 +34,9 @@ paths:
                 - $ref: '#/components/schemas/individualPayeTestSupportSaBenefitsAnnualSummaryRequest'
             examples:
               happy-path-1:
-                $ref: '#/components/examples/benefitsRequestHappyPath1'
+                $ref: '#/components/examples/requestHappyPath1'
               happy-path-2:
-                $ref: '#/components/examples/benefitsRequestHappyPath2'
+                $ref: '#/components/examples/requestHappyPath2'
         required: true
       responses:
         '201':
@@ -83,9 +83,9 @@ paths:
                 - $ref: '#/components/schemas/individualPayeTestSupportSaEmploymentsAnnualSummaryRequest'
             examples:
               happy-path-1:
-                $ref: '#/components/examples/employmentsRequestHappyPath1'
+                $ref: '#/components/examples/requestHappyPath1'
               happy-path-2:
-                $ref: '#/components/examples/employmentsRequestHappyPath1'
+                $ref: '#/components/examples/requestHappyPath2'
         required: true
       responses:
         '201':
@@ -94,7 +94,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/individualPayeTestSupportSaBenefitsAnnualSummaryResponse'
+                  - $ref: '#/components/schemas/individualPayeTestSupportSaEmploymentsAnnualSummaryResponse'
               examples:
                 happy-path-1:
                   $ref: '#/components/examples/employmentsResponseHappyPath1'
@@ -129,9 +129,12 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/individualPayeTestSupportSaIncomeAnnualSummaryRequest'
-            example:
-              scenario: HAPPY_PATH_1
+                - $ref: '#/components/schemas/individualPayeTestSupportSaIncomeAnnualSummaryRequest'
+            examples:
+              happy-path-1:
+                $ref: '#/components/examples/requestHappyPath1'
+              happy-path-2:
+                $ref: '#/components/examples/requestHappyPath2'
         required: true
       responses:
         '201':
@@ -140,18 +143,12 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/individualPayeTestSupportSaIncomeAnnualSummaryResponse'
-              example:
-                pensionsAnnuitiesAndOtherStateBenefits:
-                  otherPensionsAndRetirementAnnuities: 36.5
-                  incapacityBenefit: 980.45
-                  jobseekersAllowance: 89.99
-                  seissNetPaid: 55.55
-                employments:
-                - employerPayeReference: 123/AB456
-                  payFromEmployment: 22500
-                - employerPayeReference: 456/AB456
-                  payFromEmployment: 8650
+                  - $ref: '#/components/schemas/individualPayeTestSupportSaIncomeAnnualSummaryResponse'
+              examples:
+                happy-path-1:
+                  $ref: '#/components/examples/incomeResponseHappyPath1'
+                happy-path-2:
+                  $ref: '#/components/examples/incomeResponseHappyPath2'
       deprecated: false
       security:
         - application-restricted: [ ]
@@ -181,12 +178,12 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/individualPayeTestSupportSaEmploymentsAnnualSummaryRequest'
+                - $ref: '#/components/schemas/individualPayeTestSupportSaTaxAnnualSummaryRequest'
             examples:
               happy-path-1:
-                $ref: '#/components/examples/taxRequestHappyPath1'
+                $ref: '#/components/examples/requestHappyPath1'
               happy-path-2:
-                $ref: '#/components/examples/taxRequestHappyPath1'
+                $ref: '#/components/examples/requestHappyPath2'
         required: true
       responses:
         '201':
@@ -195,7 +192,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/individualPayeTestSupportSaBenefitsAnnualSummaryResponse'
+                  - $ref: '#/components/schemas/individualPayeTestSupportSaTaxAnnualSummaryResponse'
               examples:
                 happy-path-1:
                   $ref: '#/components/examples/taxResponseHappyPath1'
@@ -206,11 +203,11 @@ paths:
         - application-restricted: [ ]
 components:
   examples:
-    benefitsRequestHappyPath1:
+    requestHappyPath1:
       description: Payload for scenario HAPPY_PATH_1
       value:
         scenario: HAPPY_PATH_1
-    benefitsRequestHappyPath2:
+    requestHappyPath2:
       description: Payload for scenario HAPPY_PATH_2
       value:
         scenario: HAPPY_PATH_2
@@ -241,14 +238,6 @@ components:
       value:
         employments:
           - employerPayeReference: 123/AB456
-    employmentsRequestHappyPath1:
-      description: Payload for scenario HAPPY_PATH_1
-      value:
-        scenario: HAPPY_PATH_1
-    employmentsRequestHappyPath2:
-      description: Payload for scenario HAPPY_PATH_2
-      value:
-        scenario: HAPPY_PATH_2
     employmentsResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -264,14 +253,30 @@ components:
       value:
         employments:
           - employerPayeReference: 123/AB456
-    taxRequestHappyPath1:
-      description: Payload for scenario HAPPY_PATH_1
+            employerName: Company XYZ
+    incomeResponseHappyPath1:
+      description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
-        scenario: HAPPY_PATH_1
-    taxRequestHappyPath2:
-      description: Payload for scenario HAPPY_PATH_2
+        pensionsAnnuitiesAndOtherStateBenefits:
+          otherPensionsAndRetirementAnnuities: 36.5
+          incapacityBenefit: 980.45
+          jobseekersAllowance: 89.99
+          seissNetPaid: 55.55
+          employments:
+            - employerPayeReference: 123/AB456
+              payFromEmployment: 22500
+            - employerPayeReference: 456/AB456
+              payFromEmployment: 8650
+    incomeResponseHappyPath2:
+      description: Response for scenario HAPPY_PATH_2 with only mandatory fields present
       value:
-        scenario: HAPPY_PATH_2
+        pensionsAnnuitiesAndOtherStateBenefits:
+          otherPensionsAndRetirementAnnuities: 36.5
+          incapacityBenefit: 980.45
+          jobseekersAllowance: 89.99
+          employments:
+            - employerPayeReference: 123/AB456
+              payFromEmployment: 22500
     taxResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -288,11 +293,11 @@ components:
     taxResponseHappyPath2:
       description: Response for scenario HAPPY_PATH_2 with only mandatory fields present
       value:
-        pensionsAnnuitiesAndOtherStateBenefits: {}
-        refunds: {}
+        pensionsAnnuitiesAndOtherStateBenefits: { }
+        refunds: { }
         employments:
-          - employerPayeReference: 123/AB456
-            taxTakenOffPay: 890.35
+          - employerPayeReference: 111/AAA
+            taxTakenOffPay: 3000
   parameters:
     utr:
       name: utr
@@ -499,7 +504,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/firstScenario'
             - $ref: '#/components/schemas/secondScenario'
-          description: The scenario to create test data for
+          description: The scenario to create test data for Individual Benefits
       description: Create Individual Benefits summary test data request
     individualPayeTestSupportSaBenefitsAnnualSummaryResponse:
       title: individualPayeTestSupportSaBenefitsAnnualSummaryResponse
@@ -521,7 +526,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/firstScenario'
             - $ref: '#/components/schemas/secondScenario'
-          description: The scenario to create test data for
+          description: The scenario to create test data for Individual Employment
       description: Create Individual Employment summary test data request
     individualPayeTestSupportSaEmploymentsAnnualSummaryResponse:
       title: IndividualPayeTestSupportSaEmploymentsAnnualSummaryResponse
@@ -540,8 +545,9 @@ components:
       type: object
       properties:
         scenario:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/firstScenario'
+            - $ref: '#/components/schemas/secondScenario'
           description: The scenario to create test data for Individual Income
       description: Create Individual Income summary test data request
     individualPayeTestSupportSaIncomeAnnualSummaryResponse:
