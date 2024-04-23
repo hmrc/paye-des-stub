@@ -1,9 +1,5 @@
 {
-  "pensionsAnnuitiesAndOtherStateBenefits": {
-    "otherPensionsAndRetirementAnnuities": 36.5,
-    "incapacityBenefit": 980.45,
-    "jobseekersAllowance": 89.99
-  },
+  "pensionsAnnuitiesAndOtherStateBenefits": {},
   "employments": [
     {
       "employerPayeReference": "123/AB456",

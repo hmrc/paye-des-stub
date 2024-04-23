@@ -262,21 +262,18 @@ components:
           incapacityBenefit: 980.45
           jobseekersAllowance: 89.99
           seissNetPaid: 55.55
-          employments:
-            - employerPayeReference: 123/AB456
-              payFromEmployment: 22500
-            - employerPayeReference: 456/AB456
-              payFromEmployment: 8650
+        employments:
+          - employerPayeReference: 123/AB456
+            payFromEmployment: 22500
+          - employerPayeReference: 456/AB456
+            payFromEmployment: 8650
     incomeResponseHappyPath2:
       description: Response for scenario HAPPY_PATH_2 with only mandatory fields present
       value:
-        pensionsAnnuitiesAndOtherStateBenefits:
-          otherPensionsAndRetirementAnnuities: 36.5
-          incapacityBenefit: 980.45
-          jobseekersAllowance: 89.99
-          employments:
-            - employerPayeReference: 123/AB456
-              payFromEmployment: 22500
+        pensionsAnnuitiesAndOtherStateBenefits: {}
+        employments:
+          - employerPayeReference: 123/AB456
+            payFromEmployment: 22500
     taxResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
