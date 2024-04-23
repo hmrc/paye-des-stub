@@ -551,6 +551,7 @@ components:
       title: individualPayeTestSupportSaIncomeAnnualSummaryResponse
       required:
         - pensionsAnnuitiesAndOtherStateBenefits
+        - employments
       type: object
       properties:
         pensionsAnnuitiesAndOtherStateBenefits:
