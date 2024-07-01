@@ -201,6 +201,51 @@ paths:
       deprecated: false
       security:
         - application-restricted: [ ]
+  /individual-paye-test-support/sa/{utr}/annual-summary/{taxYear}:
+    post:
+      tags:
+        - individual-paye-test-support
+      summary: Create national insurance summary test data
+      description: Supports the [National Insurance API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/national-insurance) by creating national insurance test data.
+      operationId: createNationalInsuranceTestData
+      parameters:
+        - $ref: '#/components/parameters/utr'
+        - name: taxYear
+          in: path
+          description: The tax year for the national insurance test data being created.
+          required: true
+          style: simple
+          schema:
+            pattern: ^[0-9]{4}-[0-9]{2}$
+            type: string
+            example: 2016-17
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/individualPayeTestSupportSaNationalInsuranceAnnualSummaryRequest'
+            examples:
+              happy-path-1:
+                $ref: '#/components/examples/requestHappyPath1'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/individualPayeTestSupportSaNationalInsuranceAnnualSummaryResponse'
+              examples:
+                happy-path-1:
+                  $ref: '#/components/examples/nationalInsuranceResponseHappyPath1'
+      deprecated: false
+      security:
+        - application-restricted: [ ]
 components:
   examples:
     requestHappyPath1:
@@ -295,6 +340,14 @@ components:
         employments:
           - employerPayeReference: 111/AAA
             taxTakenOffPay: 3000
+    nationalInsuranceResponseHappyPath1:
+      description: Response for scenario HAPPY_PATH_1 with only mandatory fields present
+      value:
+        class1:
+          totalNICableEarnings: 10.0
+        class2:
+          totalDue: 20.0
+        maxNICsReached: false
   parameters:
     utr:
       name: utr
@@ -468,6 +521,24 @@ components:
           description: The amount of tax deducted from Incapacity Benefit.
           example: 980.45
       description: Tax deducted from pensions, annuities and other state benefits.
+    class1ForNationalInsurance:
+      title: class1
+      type: object
+      properties:
+        totalNICableEarnings:
+          type: number
+          description: Individual’s National Insurance contributions for the given tax year.
+          example: 10.0
+      description: Tax deducted from pensions, annuities and other state benefits.
+    class2ForNationalInsurance:
+      title: class2
+      type: object
+      properties:
+        totalDue:
+          type: number
+          description: Individual’s National Insurance contributions for the given tax year.
+          example: 20.0
+      description: Tax deducted from pensions, annuities and other state benefits.
     refunds:
       title: refunds
       type: object
@@ -594,3 +665,30 @@ components:
             $ref: '#/components/schemas/employmentForIndividualTax'
           description: An unordered list of zero or more employments for which the taxpayer had tax deducted in the given tax year.
       description: Create Individual Tax summary test data request
+    individualPayeTestSupportSaNationalInsuranceAnnualSummaryRequest:
+      title: individualPayeTestSupportSaNationalInsuranceAnnualSummaryRequest
+      type: object
+      properties:
+        scenario:
+          oneOf:
+            - $ref: '#/components/schemas/firstScenario'
+            - $ref: '#/components/schemas/secondScenario'
+          description: The scenario to create test data for National Insurance
+      description: Create National Insurance test data request
+    individualPayeTestSupportSaNationalInsuranceAnnualSummaryResponse:
+      title: individualPayeTestSupportSaNationalInsuranceAnnualSummaryResponse
+      required:
+        - class1
+        - class2
+        - maxNICsReached
+      type: object
+      properties:
+        class1:
+          $ref: '#/components/schemas/class1ForNationalInsurance'
+        class2:
+          $ref: '#/components/schemas/class2ForNationalInsurance'
+        maxNICsReached:
+          type: boolean
+          description: A flag indicating whether the maximum National Insurance contributions has been reached.
+          example: false
+      description: Create National Insurance summary test data request
