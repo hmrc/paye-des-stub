@@ -2,7 +2,7 @@ import uk.gov.hmrc.DefaultBuildSettings.itSettings
 
 lazy val appName = "paye-des-stub"
 
-ThisBuild / scalaVersion := "2.13.14"
+ThisBuild / scalaVersion := "3.4.2"
 ThisBuild / majorVersion := 0
 
 lazy val microservice = Project(appName, file("."))
