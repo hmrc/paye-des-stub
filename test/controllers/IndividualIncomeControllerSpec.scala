@@ -59,7 +59,7 @@ class IndividualIncomeControllerSpec
       FakeRequest()
         .withHeaders("Accept" -> "application/vnd.hmrc.1.0+json", "Content-Type" -> "application/vnd.hmrc.1.0+json")
 
-    def createSummaryRequest(scenario: String): FakeRequest[JsValue]  =
+    def createSummaryRequest(scenario: String): FakeRequest[JsValue] =
       createRequestWithHeaders.withBody[JsValue](Json.parse(s"""{ "scenario": "$scenario" }"""))
 
     def emptyRequest: FakeRequest[JsValue] =

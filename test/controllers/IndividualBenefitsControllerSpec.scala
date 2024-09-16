@@ -50,7 +50,7 @@ class IndividualBenefitsControllerSpec
     def createIndividualBenefitsRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
       .withHeaders("Accept" -> "application/vnd.hmrc.1.0+json", "Content-Type" -> "application/vnd.hmrc.1.0+json")
 
-    val underTest                                                            = new IndividualBenefitsController(
+    val underTest = new IndividualBenefitsController(
       Mockito.mock(classOf[ScenarioLoader]),
       Mockito.mock(classOf[IndividualBenefitsSummaryService]),
       stubControllerComponents()

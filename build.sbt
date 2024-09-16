@@ -15,10 +15,7 @@ lazy val microservice = Project(appName, file("."))
     PlayKeys.playDefaultPort := 9689,
     libraryDependencies ++= AppDependencies()
   )
-scalacOptions ++= Seq(
-  "-Wconf:src=routes/.*:s",
-  "-Wconf:cat=unused-imports&src=views/.*:s"
-)
+scalacOptions := scalacOptions.value.diff(Seq("-Wunused:all"))
 
 lazy val it = project
   .enablePlugins(PlayScala)

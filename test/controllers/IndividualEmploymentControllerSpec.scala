@@ -50,7 +50,7 @@ class IndividualEmploymentControllerSpec
     def createIndividualEmploymentRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
       .withHeaders("Accept" -> "application/vnd.hmrc.1.0+json", "Content-Type" -> "application/vnd.hmrc.1.0+json")
 
-    val underTest                                                              = new IndividualEmploymentController(
+    val underTest = new IndividualEmploymentController(
       Mockito.mock(classOf[ScenarioLoader]),
       Mockito.mock(classOf[IndividualEmploymentSummaryService]),
       stubControllerComponents()
