@@ -121,7 +121,7 @@ class IndividualTaxControllerSpec
 
     "return a created response and store the Individual Tax summary" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualTaxResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualTaxResponse]))
         .willReturn(Future.successful(individualTax))
@@ -136,7 +136,7 @@ class IndividualTaxControllerSpec
 
     "default to Happy Path Scenario 1 when no scenario is specified in the request" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualTaxResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualTaxResponse]))
         .willReturn(Future.successful(individualTax))
@@ -150,7 +150,7 @@ class IndividualTaxControllerSpec
 
     "return an invalid server error when the repository fails" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualTaxResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualTaxResponse]))
         .willReturn(Future.failed(new RuntimeException("expected test error")))
@@ -163,7 +163,7 @@ class IndividualTaxControllerSpec
 
     "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualTaxResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualTaxResponse]))
         .willReturn(Future.successful(individualTax))
@@ -177,7 +177,7 @@ class IndividualTaxControllerSpec
 
     "return a bad request when the scenario is invalid" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualTaxResponse](anyString, anyString)(using any()))
         .willReturn(Future.failed(new InvalidScenarioException("INVALID")))
 
       val result: Future[Result] = Future(underTest.create(utr, taxYear)(createSummaryRequest("INVALID"))).futureValue

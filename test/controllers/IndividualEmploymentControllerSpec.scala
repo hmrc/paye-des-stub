@@ -109,7 +109,7 @@ class IndividualEmploymentControllerSpec
 
     "return a created response and store the Individual Employment summary" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualEmploymentResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
         .willReturn(Future.successful(individualEmployment))
@@ -125,7 +125,7 @@ class IndividualEmploymentControllerSpec
 
     "default to Happy Path Scenario 1 when no scenario is specified in the request" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualEmploymentResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
         .willReturn(Future.successful(individualEmployment))
@@ -140,7 +140,7 @@ class IndividualEmploymentControllerSpec
 
     "return an invalid server error when the repository fails" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualEmploymentResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
         .willReturn(Future.failed(new RuntimeException("expected test error")))
@@ -153,7 +153,7 @@ class IndividualEmploymentControllerSpec
 
     "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(using any()))
         .willReturn(Future.successful(individualEmploymentResponse))
       `given`(underTest.service.create(anyString, anyString, any[IndividualEmploymentResponse]))
         .willReturn(Future.successful(individualEmployment))
@@ -167,7 +167,7 @@ class IndividualEmploymentControllerSpec
 
     "return a bad request when the scenario is invalid" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(any()))
+      `given`(underTest.scenarioLoader.loadScenario[IndividualEmploymentResponse](anyString, anyString)(using any()))
         .willReturn(Future.failed(new InvalidScenarioException("INVALID")))
 
       val result: Future[Result] = Future(underTest.create(utr, taxYear)(createSummaryRequest("INVALID"))).futureValue
