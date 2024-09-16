@@ -34,8 +34,7 @@ class ScenarioLoaderSpec extends AnyWordSpec with Matchers {
     "loadScenario" should {
       "return Happy Path when valid scenario is supplied" in {
         val result = scenarioLoader.loadScenario[IndividualTaxResponse]("individual-tax", "HAPPY_PATH_1")
-//        result.map(_ shouldBe happyPath)
-
+        result.map(r => r.toString shouldBe happyPath)
       }
 
       "return InvalidScenarioException when invalid scenario is supplied" in {
