@@ -58,14 +58,14 @@ paths:
     post:
       tags:
         - individual-paye-test-support
-      summary: Create HICBC (High Income Child Benefit Charge) test data
-      description: Supports the [HICBC API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/hicbc) by creating hicbc test data.
+      summary: Create HICBC test data
+      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/2.0) by creating High Income Child Benefit Charge (HICBC) test data.
       operationId: createHicbcTestData
       parameters:
         - $ref: '#/components/parameters/utr'
         - name: taxYear
           in: path
-          description: The tax year for the HICBC test data being created. Currently production data will only be available for a portion of the current SA year. This is not policed in this stub. This API also accepts UNHAPPY_PATH_XXX scenarios where XXX is a valid return code for the API.
+          description: The tax year for the HICBC test data that is being created. Although production data will only be available for a portion of the current Self Assessment year, that policy is not enforced for the data that is created in the sandbox environment by this operation. This API also accepts `UNHAPPY_PATH_XXX` scenarios where `XXX` is a valid return code for the API.
           required: true
           style: simple
           schema:
@@ -296,15 +296,15 @@ components:
         employments:
           - employerPayeReference: 123/AB456
     hicbcResponseHappyPath1:
-      description: Response for scenario HAPPY_PATH_1 with charge owing
+      description: Response for scenario HAPPY_PATH_1, showing a charge amount owing.
       value:
         hicbc: 215.49
     hicbcResponseHappyPath2:
-      description: Response for scenario HAPPY_PATH_2, found but with no charge owing
+      description: Response for scenario HAPPY_PATH_2, showing no charge owing.
       value:
         hicbc: 0
     hicbcResponseUnhappyPath404:
-      description: Response for scenario UNHAPPY_PATH_404 (amount in pounds will indicate error code to be returned when utr requested)
+      description: Response for scenario UNHAPPY_PATH_404 (the amount in pounds will indicate the error code to be returned when a UTR is requested).
       value:
         hicbc: 404
     employmentsResponseHappyPath1:
@@ -602,14 +602,14 @@ components:
             - $ref: '#/components/schemas/firstScenario'
             - $ref: '#/components/schemas/secondScenario'
             - $ref: '#/components/schemas/unhappyHicbcScenario'
-          description: The scenario to create test data for HICBC
+          description: The scenario for which to create test data for HICBC.
       description: Create HICBC test data request
     individualPayeTestSupportSaHicbcAnnualSummaryResponse:
       title: individualPayeTestSupportSaHicbcAnnualSummaryResponse
       required:
         - hicbc
       type: number
-      description: The amount of the charge (amount in pounds will indicate error code to be returned if unhappy path specified)
+      description: The HICBC amount (the amount in pounds will indicate the error code to be returned if the unhappy path is specified).
       example:
         214.12
     individualPayeTestSupportSaEmploymentsAnnualSummaryRequest:
