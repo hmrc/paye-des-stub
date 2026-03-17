@@ -17,18 +17,18 @@
 package controllers
 
 import models.*
+import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
-import play.api.{Logger, Logging}
 import services.{IndividualChildBenefitsSummaryService, ScenarioLoader}
 import uk.gov.hmrc.domain.SaUtr
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class IndividualChildBenefitsController @Inject()(
+class IndividualChildBenefitsController @Inject() (
   val scenarioLoader: ScenarioLoader,
   val service: IndividualChildBenefitsSummaryService,
   val cc: ControllerComponents
@@ -40,8 +40,13 @@ class IndividualChildBenefitsController @Inject()(
 
   final def find(utr: String, taxYear: String): Action[AnyContent] = Action async {
     service.fetch(utr, taxYear) map {
-      case Some(result) => Ok(Json.toJson(result.individualChildBenefitsResponse))
-      case _            => NotFound
+      case Some(result) =>
+        result.individualChildBenefitsResponse.errorResponse match {
+          case Some(errorResponse) => Status(errorResponse)
+          case None                => Ok(Json.toJson(result.individualChildBenefitsResponse))
+        }
+
+      case _ => NotFound
     } recover { case e =>
       logger.error("[individualChildBenefitsController][find] An error occurred while finding test data", e)
       InternalServerError
@@ -54,12 +59,17 @@ class IndividualChildBenefitsController @Inject()(
       withJsonBody[CreateSummaryRequest] { (createSummaryRequest: CreateSummaryRequest) =>
         val scenario = createSummaryRequest.scenario.getOrElse("HAPPY_PATH_1")
         if (scenario.startsWith("UNHAPPY_PATH_")) {
-          Future.successful(Status(scenario.split("_")(2).toInt))
+          val errorResponseStatus             = scenario.split("_")(2).toInt
+          val individualChildBenefitsResponse =
+            IndividualChildBenefitsResponse(BigDecimal(0), Some(errorResponseStatus))
+          service
+            .create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
+            .map(_ => Created(Json.toJson(individualChildBenefitsResponse)))
         } else {
-
           for {
-            individualChildBenefits <- scenarioLoader.loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", scenario)
-            _ <- service.create(utr.utr, taxYear.startYr, individualChildBenefits)
+            individualChildBenefits <-
+              scenarioLoader.loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", scenario)
+            _                       <- service.create(utr.utr, taxYear.startYr, individualChildBenefits)
           } yield Created(Json.toJson(individualChildBenefits))
         }
 
