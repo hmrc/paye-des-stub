@@ -25,7 +25,7 @@ import uk.gov.hmrc.domain.SaUtr
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class IndividualChildBenefitsController @Inject()(
@@ -53,11 +53,15 @@ class IndividualChildBenefitsController @Inject()(
       given Request[JsValue] = request
       withJsonBody[CreateSummaryRequest] { (createSummaryRequest: CreateSummaryRequest) =>
         val scenario = createSummaryRequest.scenario.getOrElse("HAPPY_PATH_1")
+        if (scenario.startsWith("UNHAPPY_PATH_")) {
+          Future.successful(Status(scenario.split("_")(2).toInt))
+        } else {
 
-        for {
-          individualChildBenefits <- scenarioLoader.loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", scenario)
-          _                  <- service.create(utr.utr, taxYear.startYr, individualChildBenefits)
-        } yield Created(Json.toJson(individualChildBenefits))
+          for {
+            individualChildBenefits <- scenarioLoader.loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", scenario)
+            _ <- service.create(utr.utr, taxYear.startYr, individualChildBenefits)
+          } yield Created(Json.toJson(individualChildBenefits))
+        }
 
       } recover {
         case _: InvalidScenarioException => BadRequest(JsonErrorResponse("UNKNOWN_SCENARIO", "Unknown test scenario"))
