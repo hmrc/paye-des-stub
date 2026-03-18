@@ -67,6 +67,7 @@ class IndividualChildBenefitsControllerSpec
     val utr: SaUtr                                             = SaUtr(validUtrString)
     val taxYear: TaxYear                                       = TaxYear(validTaxYearString)
     val individualChildBenefitsResponse: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(BigDecimal(23.33))
+    val individualChildBenefits500Response: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(BigDecimal(0), Some(500))
     val individualChildBenefits: IndividualChildBenefits                 = IndividualChildBenefits("", "", individualChildBenefitsResponse)
   }
 
@@ -120,6 +121,19 @@ class IndividualChildBenefitsControllerSpec
       status(result) shouldBe CREATED
       verify(underTest.scenarioLoader).loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", "HAPPY_PATH_1")
       verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefitsResponse)
+    }
+    "return a created response and store the Individual Benefits summary for unhappy path" in new Setup {
+
+      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
+        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
+        .willReturn(Future.successful(individualChildBenefits))
+
+      val result: Future[Result] =
+        Future(underTest.create(utr, taxYear)(createSummaryRequest("UNHAPPY_PATH_500"))).futureValue
+
+      status(result) shouldBe CREATED
+      verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefits500Response)
     }
 
     "default to Happy Path Scenario 1 when no scenario is specified in the request" in new Setup {
