@@ -54,18 +54,18 @@ paths:
       deprecated: false
       security:
         - application-restricted: [ ]
-  /individual-paye-test-support/sa/{utr}/hicbc/annual-summary/{taxYear}:
+  /individual-paye-test-support/sa/{utr}/child-benefit-entitlement/annual-summary/{taxYear}:
     post:
       tags:
         - individual-paye-test-support
-      summary: Create HICBC test data
-      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/2.0) by creating High Income Child Benefit Charge (HICBC) test data.
-      operationId: createHicbcTestData
+      summary: Create Child Benefit entitlement test data
+      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/2.0) by creating Child Benefit entitlement test data.
+      operationId: createChildBenefitEntitlementTestData
       parameters:
         - $ref: '#/components/parameters/utr'
         - name: taxYear
           in: path
-          description: The tax year for the HICBC test data that is being created. Although production data will only be available for a portion of the current Self Assessment year, that policy is not enforced for the data that is created in the sandbox environment by this operation. This API also accepts `UNHAPPY_PATH_XXX` scenarios where `XXX` is a valid return code for the API.
+          description: The tax year for the Child Benefit entitlement test data that is being created. Although production data will only be available for a portion of the current Self Assessment year, that policy is not enforced for the data that is created in the sandbox environment by this operation.
           required: true
           style: simple
           schema:
@@ -80,15 +80,11 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/individualPayeTestSupportSaHicbcAnnualSummaryRequest'
+                - $ref: '#/components/schemas/individualPayeTestSupportChildBenefitEntitlementRequest'
             examples:
               happy-path-1:
                 $ref: '#/components/examples/requestHappyPath1'
-              happy-path-2:
-                $ref: '#/components/examples/requestHappyPath2'
-              unhappy-path-404:
-                $ref: '#/components/examples/requestUnhappyPath404'
-          required: true
+        required: true
       responses:
         '201':
           description: Created
@@ -96,14 +92,10 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/individualPayeTestSupportSaHicbcAnnualSummaryResponse'
+                  - $ref: '#/components/schemas/individualPayeTestSupportChildBenefitEntitlementResponse'
               examples:
                 happy-path-1:
-                  $ref: '#/components/examples/hicbcResponseHappyPath1'
-                happy-path-2:
-                  $ref: '#/components/examples/hicbcResponseHappyPath2'
-                unhappy-path-404:
-                  $ref: '#/components/examples/hicbcResponseUnhappyPath404'
+                  $ref: '#/components/examples/childBenefitEntitlementResponseHappyPath1'
           deprecated: false
       security:
         - application-restricted: [ ]
@@ -264,10 +256,6 @@ components:
       description: Payload for scenario HAPPY_PATH_2
       value:
         scenario: HAPPY_PATH_2
-    requestUnhappyPath404:
-      description: Payload for scenario UNHAPPY_PATH_404
-      value:
-        scenario: UNHAPPY_PATH_404
     benefitsResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -295,18 +283,10 @@ components:
       value:
         employments:
           - employerPayeReference: 123/AB456
-    hicbcResponseHappyPath1:
-      description: Response for scenario HAPPY_PATH_1, showing a charge amount owing.
+    childBenefitEntitlementResponseHappyPath1:
+      description: Response for scenario HAPPY_PATH_1, showing an amount of child benefit entitlement.
       value:
-        hicbc: 215.49
-    hicbcResponseHappyPath2:
-      description: Response for scenario HAPPY_PATH_2, showing no charge owing.
-      value:
-        hicbc: 0
-    hicbcResponseUnhappyPath404:
-      description: Response for scenario UNHAPPY_PATH_404 (the amount in pounds will indicate the error code to be returned when a UTR is requested).
-      value:
-        hicbc: 404
+        childBenefitEntitlement: 215.49
     employmentsResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -562,15 +542,6 @@ components:
         - HAPPY_PATH_2
       type: string
       description: Happy path test scenario with only mandatory fields
-    unhappyHicbcScenario:
-      title: unhappyHicbcScenario
-      enum:
-        - UNHAPPY_PATH_400
-        - UNHAPPY_PATH_404
-        - UNHAPPY_PATH_500
-        - UNHAPPY_PATH_503
-      type: string
-      description: Return an error code.
     individualPayeTestSupportSaBenefitsAnnualSummaryRequest:
       title: individualPayeTestSupportSaBenefitsAnnualSummaryRequest
       type: object
@@ -593,23 +564,21 @@ components:
             $ref: '#/components/schemas/employmentForIndividualBenefits'
           description: An unordered list of one or more employments for which the taxpayer reported any benefits for the given tax year
       description: Create Individual Benefits summary test data response
-    individualPayeTestSupportSaHicbcAnnualSummaryRequest:
-      title: individualPayeTestSupportSaHicbcAnnualSummaryRequest
+    individualPayeTestSupportChildBenefitEntitlementRequest:
+      title: individualPayeTestSupportChildBenefitEntitlementRequest
       type: object
       properties:
         scenario:
           oneOf:
             - $ref: '#/components/schemas/firstScenario'
-            - $ref: '#/components/schemas/secondScenario'
-            - $ref: '#/components/schemas/unhappyHicbcScenario'
-          description: The scenario for which to create test data for HICBC.
-      description: Create HICBC test data request
-    individualPayeTestSupportSaHicbcAnnualSummaryResponse:
-      title: individualPayeTestSupportSaHicbcAnnualSummaryResponse
+          description: The scenario for which to create Child Benefit entitlement test data.
+      description: Create Child Benefit entitlement test data request
+    individualPayeTestSupportChildBenefitEntitlementResponse:
+      title: childBenefitEntitlement
       required:
-        - hicbc
+        - childBenefitEntitlement
       type: number
-      description: The HICBC amount (the amount in pounds will indicate the error code to be returned if the unhappy path is specified).
+      description: The amount of Child Benefit entitlement.
       example:
         214.12
     individualPayeTestSupportSaEmploymentsAnnualSummaryRequest:
