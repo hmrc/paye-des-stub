@@ -91,8 +91,9 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/t
 ```
 
 ## STUBBING RESPONSES for Child Benefit Entitlement
-- HAPPY_PATH_1 is a valid non-zero value
-- HAPPY_PATH_2 is a zero value
+- HAPPY_PATH_1 is an array with one valid non-zero value
+- HAPPY_PATH_2 is an array with one zero value
+- HAPPY_PATH_3 is an empty array
 - UNHAPPY_PATH_500 will stub to return a 500 response. Replace 500 with whatever other response you wish to stub.
 
 
