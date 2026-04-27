@@ -58,7 +58,7 @@ curl --header "Content-Type: application/json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/child-benefit-entitlement/annual-summary/2017-18
-curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/child-benefit-entitlement/tax-year/2017
+curl -X GET http://localhost:9689/benefits-and-credits/child-benefit/views/iv_sa_prepop_hicbc?input_utr=2234567890&input_tax_year=2017
 ```
 To test the stub endpoint for Individual Employment:
 ```
