@@ -61,7 +61,7 @@ class IndividualChildBenefitsController @Inject() (
         if (scenario.startsWith("UNHAPPY_PATH_")) {
           val errorResponseStatus             = scenario.split("_")(2).toInt
           val individualChildBenefitsResponse =
-            IndividualChildBenefitsResponse(BigDecimal(0), Some(errorResponseStatus))
+            IndividualChildBenefitsResponse(Nil, Some(errorResponseStatus))
           service
             .create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
             .map(_ => Created(Json.toJson(individualChildBenefitsResponse)))

@@ -16,10 +16,21 @@
 
 package models
 
+import play.api.libs.json.{Format, Json, Reads}
+
 trait IndividualResponse
 
 case class IndividualBenefitsResponse(employments: List[IndividualBenefitsEmployment]) extends IndividualResponse
-case class IndividualChildBenefitsResponse(childBenefitEntitlement: BigDecimal, errorResponse: Option[Int] = None) extends IndividualResponse
+case class IndividualChildBenefitsResponseDetail(childBenefitEntitlement: BigDecimal)
+case class IndividualChildBenefitsResponse(elements: Seq[IndividualChildBenefitsResponseDetail], errorResponse: Option[Int] = None) extends IndividualResponse
+
+object IndividualChildBenefitsResponseDetail {
+  implicit val formats: Format[IndividualChildBenefitsResponseDetail] = Json.format[IndividualChildBenefitsResponseDetail]
+}
+
+object IndividualChildBenefitsResponse {
+  implicit val formats: Format[IndividualChildBenefitsResponse] = Json.format[IndividualChildBenefitsResponse]
+}
 
 case class IndividualEmploymentResponse(employments: List[IndividualEmploymentEmployment]) extends IndividualResponse
 
