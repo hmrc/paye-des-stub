@@ -33,7 +33,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
     }
 
     Scenario("Benefits summary data can be primed") {
-      When("I request child benefit entitlement summary data for a given utr and taxYear")
+      When("I post child benefit entitlement summary data for a given utr and taxYear")
       val response = primeIndividualChildBenefitsData("1111111111", "2016-17", """{ "scenario": "HAPPY_PATH_1" }""")
 
       Then("The response should indicate that the summary has been created")
@@ -65,7 +65,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
       Then("The response should contain individual child benefit entitlement data")
       primeResponse.status shouldBe CREATED
 
-      And("I request employment data for a given utr and taxYear")
+      And("I request child benefit entitlement data for a given utr and taxYear")
       val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2016")
 
       And("The response should contain individual child benefit entitlement data")
@@ -96,7 +96,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
     postEndpoint(s"sa/$utr/child-benefit-entitlement/annual-summary/$taxYear", payload)
 
   private def fetchIndividualChildBenefitsData(utr: String, taxYear: String): StandaloneWSRequest#Response =
-    getEndpoint(s"self-assessment-prepop/individual/$utr/child-benefit-entitlement/tax-year/$taxYear")
+    getEndpoint(s"benefits-and-credits/child-benefit/views/iv_sa_prepop_hicbc?input_utr=$utr&input_tax_year=$taxYear")
 
   override protected def beforeEach(): Unit = {
     val repository = app.injector.instanceOf[IndividualChildBenefitsRepository]

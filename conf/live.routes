@@ -1,7 +1,7 @@
 GET        /self-assessment-prepop/individual/:utr/benefits/tax-year/:taxYear                   controllers.IndividualBenefitsController.find(utr, taxYear)
 POST       /sa/:utr/benefits/annual-summary/:taxYear                                            controllers.IndividualBenefitsController.create(utr: uk.gov.hmrc.domain.SaUtr, taxYear: models.TaxYear)
 
-GET        /self-assessment-prepop/individual/:utr/child-benefit-entitlement/tax-year/:taxYear  controllers.IndividualChildBenefitsController.find(utr, taxYear)
+GET        /benefits-and-credits/child-benefit/views/iv_sa_prepop_hicbc                         controllers.IndividualChildBenefitsController.find(input_utr: String, input_tax_year: String)
 POST       /sa/:utr/child-benefit-entitlement/annual-summary/:taxYear                           controllers.IndividualChildBenefitsController.create(utr: uk.gov.hmrc.domain.SaUtr, taxYear: models.TaxYear)
 
 GET        /self-assessment-prepop/individual/:utr/employment-history/tax-year/:taxYear         controllers.IndividualEmploymentController.find(utr, taxYear)
