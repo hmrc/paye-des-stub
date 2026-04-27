@@ -21,7 +21,7 @@ import play.api.libs.json.{Format, Json, Reads}
 trait IndividualResponse
 
 case class IndividualBenefitsResponse(employments: List[IndividualBenefitsEmployment]) extends IndividualResponse
-case class IndividualChildBenefitsResponseDetail(childBenefitEntitlement: BigDecimal)
+case class IndividualChildBenefitsResponseDetail(child_benefit_entitlement: BigDecimal)
 case class IndividualChildBenefitsResponse(elements: Seq[IndividualChildBenefitsResponseDetail], errorResponse: Option[Int] = None) extends IndividualResponse
 
 object IndividualChildBenefitsResponseDetail {
