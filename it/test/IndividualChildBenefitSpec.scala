@@ -16,6 +16,7 @@
 
 import helpers.BaseSpec
 import org.mongodb.scala.SingleObservableFuture
+import play.api.http.HeaderNames
 import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.libs.ws.StandaloneWSRequest
 import repositories.IndividualChildBenefitsRepository
@@ -23,6 +24,17 @@ import repositories.IndividualChildBenefitsRepository
 import scala.concurrent.Await.result
 
 class IndividualChildBenefitSpec extends BaseSpec {
+
+  override def postEndpoint(endpoint: String, payload: String): StandaloneWSRequest#Response =
+    result(
+      awaitable = post(
+        s"$serviceUrl/$endpoint",
+        payload,
+        Seq((HeaderNames.CONTENT_TYPE, "application/json"), (HeaderNames.ACCEPT, "application/vnd.hmrc.2.0+json"))
+      ),
+      atMost = timeout
+    )
+
   Feature("Fetch individual child benefit entitlement summary data") {
     Scenario("No data is returned because utr and taxYear are not found") {
       When("I request child benefit entitlement summary data for a given utr and taxYear")
