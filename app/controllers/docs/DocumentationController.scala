@@ -16,7 +16,6 @@
 
 package controllers.docs
 
-import config.AppConfig
 import controllers.Assets
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -25,11 +24,11 @@ import views.txt
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DocumentationController @Inject() (appConfig: AppConfig, assets: Assets, cc: ControllerComponents)
+class DocumentationController @Inject() (assets: Assets, cc: ControllerComponents)
     extends BackendController(cc) {
 
   def definition: Action[AnyContent] = Action {
-    Ok(txt.definition(appConfig.apiStatus)).withHeaders(CONTENT_TYPE -> JSON)
+    Ok(txt.definition()).withHeaders(CONTENT_TYPE -> JSON)
   }
 
   def specification(version: String, file: String): Action[AnyContent] =

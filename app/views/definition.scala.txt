@@ -1,4 +1,4 @@
-@(apiStatus: String)
+@()
 {
   "api": {
     "name": "Individual PAYE Test Support",
@@ -8,8 +8,13 @@
     "versions": [
       {
         "version": "1.0",
-        "status": "@apiStatus",
+        "status": "BETA",
         "endpointsEnabled": true
+      },
+      {
+        "version": "2.0",
+        "status": "ALPHA",
+        "endpointsEnabled": false
       }
     ]
   }
