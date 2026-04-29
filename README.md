@@ -58,7 +58,7 @@ curl --header "Content-Type: application/json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/child-benefit-entitlement/annual-summary/2017-18
-curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/child-benefit-entitlement/tax-year/2017
+curl -X GET http://localhost:9689/benefits-and-credits/child-benefit/views/iv_sa_prepop_hicbc?input_utr=2234567890&input_tax_year=2017
 ```
 To test the stub endpoint for Individual Employment:
 ```
@@ -91,8 +91,9 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/t
 ```
 
 ## STUBBING RESPONSES for Child Benefit Entitlement
-- HAPPY_PATH_1 is a valid non-zero value
-- HAPPY_PATH_2 is a zero value
+- HAPPY_PATH_1 is an array with one valid non-zero value
+- HAPPY_PATH_2 is an array with one zero value
+- HAPPY_PATH_3 is an empty array
 - UNHAPPY_PATH_500 will stub to return a 500 response. Replace 500 with whatever other response you wish to stub.
 
 

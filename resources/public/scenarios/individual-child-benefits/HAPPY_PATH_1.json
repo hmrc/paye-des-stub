@@ -1,3 +1,7 @@
 {
-  "childBenefitEntitlement": 450.99
+  "elements": [
+    {
+      "child_benefit_entitlement": 450.99
+    }
+  ]
 }

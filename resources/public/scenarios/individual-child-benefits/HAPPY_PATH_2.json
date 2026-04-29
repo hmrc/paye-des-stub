@@ -1,3 +1,7 @@
 {
-  "childBenefitEntitlement": 0.00
+  "elements": [
+    {
+      "child_benefit_entitlement": 0.00
+    }
+  ]
 }

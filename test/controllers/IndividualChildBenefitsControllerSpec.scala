@@ -66,8 +66,8 @@ class IndividualChildBenefitsControllerSpec
     val validTaxYearString                                     = "2016-17"
     val utr: SaUtr                                             = SaUtr(validUtrString)
     val taxYear: TaxYear                                       = TaxYear(validTaxYearString)
-    val individualChildBenefitsResponse: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(BigDecimal(23.33))
-    val individualChildBenefits500Response: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(BigDecimal(0), Some(500))
+    val individualChildBenefitsResponse: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33))))
+    val individualChildBenefits500Response: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(Nil, Some(500))
     val individualChildBenefits: IndividualChildBenefits                 = IndividualChildBenefits("", "", individualChildBenefitsResponse)
   }
 
@@ -75,7 +75,7 @@ class IndividualChildBenefitsControllerSpec
     "return 200 (OK) with the happy path response when called with a utr and taxYear that are found" in new Setup {
 
       `given`(underTest.service.fetch(validUtrString, validTaxYearString))
-        .willReturn(Future(Some(IndividualChildBenefits("", "", IndividualChildBenefitsResponse(BigDecimal(23.33))))))
+        .willReturn(Future(Some(IndividualChildBenefits("", "", IndividualChildBenefitsResponse(Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33))))))))
 
       val result: Future[Result] =
         Future(underTest.find(validUtrString, validTaxYearString)(createIndividualChildBenefitsRequest)).futureValue
