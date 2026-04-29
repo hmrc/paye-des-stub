@@ -30,7 +30,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
       awaitable = post(
         s"$serviceUrl/$endpoint",
         payload,
-        Seq((HeaderNames.CONTENT_TYPE, "application/json"), (HeaderNames.ACCEPT, "application/vnd.hmrc.1.2+json"))
+        Seq((HeaderNames.CONTENT_TYPE, "application/json"), (HeaderNames.ACCEPT, "application/vnd.hmrc.2.0+json"))
       ),
       atMost = timeout
     )

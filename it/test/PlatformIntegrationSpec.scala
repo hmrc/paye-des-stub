@@ -55,7 +55,7 @@ class PlatformIntegrationSpec extends AnyWordSpecLike with Matchers with GuiceOn
           |                "endpointsEnabled": true
           |            },
           |            {
-          |              "version": "1.2",
+          |              "version": "2.0",
           |              "status": "ALPHA",
           |              "endpointsEnabled": false
           |            }
