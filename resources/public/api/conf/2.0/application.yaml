@@ -97,7 +97,7 @@ paths:
               examples:
                 happy-path-1:
                   $ref: '#/components/examples/childBenefitEntitlementResponseHappyPath1'
-          deprecated: false
+      deprecated: false
       security:
         - application-restricted: [ ]
   /individual-paye-test-support/sa/{utr}/employments/annual-summary/{taxYear}:
