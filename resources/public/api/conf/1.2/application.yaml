@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Individual PAYE Test Support
-  version: '2.0'
+  version: '1.2'
 servers:
   - url: https://test-api.service.hmrc.gov.uk
 paths:
@@ -10,6 +10,7 @@ paths:
       tags:
         - individual-paye-test-support
       summary: Create benefits summary test data
+      
       description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits) by creating benefits summary test data.
       operationId: createBenefitsSummaryTestData
       parameters:
@@ -59,7 +60,7 @@ paths:
       tags:
         - individual-paye-test-support
       summary: Create Child Benefit entitlement test data
-      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/2.0) by creating Child Benefit entitlement test data.
+      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/1.2) by creating Child Benefit entitlement test data.
       operationId: createChildBenefitEntitlementTestData
       parameters:
         - $ref: '#/components/parameters/utr'

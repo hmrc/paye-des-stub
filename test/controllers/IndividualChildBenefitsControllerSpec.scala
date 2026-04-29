@@ -48,7 +48,7 @@ class IndividualChildBenefitsControllerSpec
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     def createIndividualChildBenefitsRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-      .withHeaders("Accept" -> "application/vnd.hmrc.2.0+json", "Content-Type" -> "application/vnd.hmrc.1.0+json")
+      .withHeaders("Accept" -> "application/vnd.hmrc.1.2+json", "Content-Type" -> "application/vnd.hmrc.1.0+json")
 
     val underTest = new IndividualChildBenefitsController(
       Mockito.mock(classOf[ScenarioLoader]),
