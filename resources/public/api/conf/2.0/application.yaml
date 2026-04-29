@@ -10,6 +10,7 @@ paths:
       tags:
         - individual-paye-test-support
       summary: Create benefits summary test data
+      
       description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits) by creating benefits summary test data.
       operationId: createBenefitsSummaryTestData
       parameters:
@@ -59,7 +60,7 @@ paths:
       tags:
         - individual-paye-test-support
       summary: Create Child Benefit entitlement test data
-      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits/2.0) by creating Child Benefit entitlement test data.
+      description: Supports the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits) by creating Child Benefit entitlement test data.
       operationId: createChildBenefitEntitlementTestData
       parameters:
         - $ref: '#/components/parameters/utr'
@@ -96,7 +97,7 @@ paths:
               examples:
                 happy-path-1:
                   $ref: '#/components/examples/childBenefitEntitlementResponseHappyPath1'
-          deprecated: false
+      deprecated: false
       security:
         - application-restricted: [ ]
   /individual-paye-test-support/sa/{utr}/employments/annual-summary/{taxYear}:
