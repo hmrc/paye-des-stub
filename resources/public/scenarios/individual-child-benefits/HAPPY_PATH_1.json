@@ -1,7 +1,15 @@
 {
-  "elements": [
-    {
-      "child_benefit_entitlement": 450.99
+  "stubPayload": {
+    "elements": [
+      {
+        "child_benefit_entitlement": 450.99
+      }
+    ]
+  },
+  "postPayload": {
+    "expectedStatus": 200,
+    "expectedJson": {
+      "childBenefitEntitlement": 450.99
     }
-  ]
+  }
 }

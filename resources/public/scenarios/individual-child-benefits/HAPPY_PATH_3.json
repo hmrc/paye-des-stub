@@ -1,3 +1,8 @@
 {
-  "elements": []
+  "stubPayload": {
+    "elements": []
+  },
+  "postPayload": {
+    "expectedStatus": 404
+  }
 }

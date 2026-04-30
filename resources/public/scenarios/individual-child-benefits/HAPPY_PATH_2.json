@@ -1,7 +1,12 @@
 {
-  "elements": [
-    {
-      "child_benefit_entitlement": 0.00
-    }
-  ]
+  "stubPayload": {
+    "elements": [
+      {
+        "child_benefit_entitlement": 0.00
+      }
+    ]
+  },
+  "postPayload": {
+    "expectedStatus": 404
+  }
 }

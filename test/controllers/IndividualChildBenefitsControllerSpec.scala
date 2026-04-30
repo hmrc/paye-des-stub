@@ -62,26 +62,43 @@ class IndividualChildBenefitsControllerSpec
     def emptyRequest: FakeRequest[JsValue] =
       createIndividualChildBenefitsRequest.withBody[JsValue](Json.parse("{}"))
 
-    val validUtrString                                         = "2234567890"
-    val validTaxYearString                                     = "2016-17"
-    val utr: SaUtr                                             = SaUtr(validUtrString)
-    val taxYear: TaxYear                                       = TaxYear(validTaxYearString)
-    val individualChildBenefitsResponse: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33))))
-    val individualChildBenefits500Response: IndividualChildBenefitsResponse = IndividualChildBenefitsResponse(Nil, Some(500))
-    val individualChildBenefits: IndividualChildBenefits                 = IndividualChildBenefits("", "", individualChildBenefitsResponse)
+    val validUtrString                                                           = "2234567890"
+    val validTaxYearString                                                       = "2016-17"
+    val utr: SaUtr                                                               = SaUtr(validUtrString)
+    val taxYear: TaxYear                                                         = TaxYear(validTaxYearString)
+    val individualChildBenefitsResponse: IndividualChildBenefitsResponse         = IndividualChildBenefitsResponse(
+      Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33)))
+    )
+    val individualChildBenefitsPostResponse: IndividualChildBenefitsPostResponse = IndividualChildBenefitsPostResponse(
+      expectedStatus = 200,
+      expectedJson = Some(Json.obj("test" -> "test"))
+    )
+    val individualChildBenefits500Response: IndividualChildBenefitsResponse      =
+      IndividualChildBenefitsResponse(Nil, Some(500))
+    val individualChildBenefits: IndividualChildBenefits                         =
+      IndividualChildBenefits("", "", individualChildBenefitsResponse)
   }
 
   "fetch" should {
     "return 200 (OK) with the happy path response when called with a utr and taxYear that are found" in new Setup {
 
       `given`(underTest.service.fetch(validUtrString, validTaxYearString))
-        .willReturn(Future(Some(IndividualChildBenefits("", "", IndividualChildBenefitsResponse(Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33))))))))
+        .willReturn(
+          Future(
+            Some(
+              IndividualChildBenefits(
+                "",
+                "",
+                IndividualChildBenefitsResponse(Seq(IndividualChildBenefitsResponseDetail(BigDecimal(23.33))))
+              )
+            )
+          )
+        )
 
       val result: Future[Result] =
         Future(underTest.find(validUtrString, validTaxYearString)(createIndividualChildBenefitsRequest)).futureValue
 
       status(result)        shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(individualChildBenefitsResponse)
     }
 
     "return 404 (NOT_FOUND) when called with a utr and taxYear that are not found" in new Setup {
@@ -109,9 +126,8 @@ class IndividualChildBenefitsControllerSpec
   "create" should {
 
     "return a created response and store the Individual Benefits summary" in new Setup {
-
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
-        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
+        .willReturn(Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse)))
       `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
         .willReturn(Future.successful(individualChildBenefits))
 
@@ -119,13 +135,13 @@ class IndividualChildBenefitsControllerSpec
         Future(underTest.create(utr, taxYear)(createSummaryRequest("HAPPY_PATH_1"))).futureValue
 
       status(result) shouldBe CREATED
-      verify(underTest.scenarioLoader).loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", "HAPPY_PATH_1")
+      contentAsJson(result) shouldBe Json.toJson(individualChildBenefitsPostResponse)
+      verify(underTest.scenarioLoader).loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_1")
       verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefitsResponse)
     }
     "return a created response and store the Individual Benefits summary for unhappy path" in new Setup {
-
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
-        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
+        .willReturn(Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse)))
       `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
         .willReturn(Future.successful(individualChildBenefits))
 
@@ -133,27 +149,29 @@ class IndividualChildBenefitsControllerSpec
         Future(underTest.create(utr, taxYear)(createSummaryRequest("UNHAPPY_PATH_500"))).futureValue
 
       status(result) shouldBe CREATED
+      contentAsJson(result) shouldBe Json.toJson(IndividualChildBenefitsPostResponse(500))
       verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefits500Response)
     }
 
     "default to Happy Path Scenario 1 when no scenario is specified in the request" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
-        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
+        .willReturn(Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse)))
       `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
         .willReturn(Future.successful(individualChildBenefits))
 
       val result: Future[Result] = Future(underTest.create(utr, taxYear)(emptyRequest)).futureValue
 
       status(result) shouldBe CREATED
-      verify(underTest.scenarioLoader).loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", "HAPPY_PATH_1")
+      contentAsJson(result) shouldBe Json.toJson(individualChildBenefitsPostResponse)
+      verify(underTest.scenarioLoader).loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_1")
       verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefitsResponse)
     }
 
     "return an invalid server error when the repository fails" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
-        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
+        .willReturn(Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse)))
       `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
         .willReturn(Future.failed(new RuntimeException("expected test error")))
 
@@ -165,8 +183,8 @@ class IndividualChildBenefitsControllerSpec
 
     "return 406 (NOT_ACCEPTABLE) for an invalid accept header" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
-        .willReturn(Future.successful(individualChildBenefitsResponse))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
+        .willReturn(Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse)))
       `given`(underTest.service.create(anyString, anyString, any[IndividualChildBenefitsResponse]))
         .willReturn(Future.successful(individualChildBenefits))
 
@@ -179,7 +197,7 @@ class IndividualChildBenefitsControllerSpec
 
     "return a bad request when the scenario is invalid" in new Setup {
 
-      `given`(underTest.scenarioLoader.loadScenario[IndividualChildBenefitsResponse](anyString, anyString)(using any()))
+      `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayload(anyString, anyString))
         .willReturn(Future.failed(new InvalidScenarioException("INVALID")))
 
       val result: Future[Result] = Future(underTest.create(utr, taxYear)(createSummaryRequest("INVALID"))).futureValue
