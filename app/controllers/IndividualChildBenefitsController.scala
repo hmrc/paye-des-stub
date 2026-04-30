@@ -64,13 +64,13 @@ class IndividualChildBenefitsController @Inject() (
             IndividualChildBenefitsResponse(Nil, Some(errorResponseStatus))
           service
             .create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
-            .map(_ => Created(Json.toJson(individualChildBenefitsResponse)))
+            .map(_ => Created(Json.toJson(IndividualChildBenefitsPostResponse(expectedStatus = errorResponseStatus))))
         } else {
           for {
-            individualChildBenefits <-
-              scenarioLoader.loadScenario[IndividualChildBenefitsResponse]("individual-child-benefits", scenario)
-            _                       <- service.create(utr.utr, taxYear.startYr, individualChildBenefits)
-          } yield Created(Json.toJson(individualChildBenefits))
+            Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse) <-
+              scenarioLoader.loadScenarioWithTransformedPayload("individual-child-benefits", scenario)
+            _                                                                            <- service.create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
+          } yield Created(Json.toJson(individualChildBenefitsPostResponse))
         }
 
       } recover {

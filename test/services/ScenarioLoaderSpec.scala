@@ -20,9 +20,12 @@ import models.*
 import org.scalatest.concurrent.Futures.whenReady
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.Json
 import util.ResourceLoader.*
 
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 class ScenarioLoaderSpec extends AnyWordSpec with Matchers {
 
@@ -39,6 +42,27 @@ class ScenarioLoaderSpec extends AnyWordSpec with Matchers {
 
       "return InvalidScenarioException when invalid scenario is supplied" in {
         val result = scenarioLoader.loadScenario[IndividualTaxResponse]("individual-tax", "HAPPY")
+        result.map(_ shouldBe new InvalidScenarioException("HAPPY"))
+      }
+    }
+    "loadScenarioWithTransformedPayload" should {
+      "return Happy Path when valid scenario is supplied" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_1")
+        val res = Await.result(result, Duration.Inf)
+        res._1.elements.headOption shouldBe Some(IndividualChildBenefitsResponseDetail(450.99))
+        res._2.expectedJson shouldBe Some(Json.obj("childBenefitEntitlement" -> 450.99))
+        res._2.expectedStatus shouldBe 200
+      }
+      "return Happy Path when valid scenario is supplied without json payload" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_2")
+        val res = Await.result(result, Duration.Inf)
+        res._1.elements.headOption shouldBe Some(IndividualChildBenefitsResponseDetail(0.00))
+        res._2.expectedJson shouldBe None
+        res._2.expectedStatus shouldBe 404        
+      }
+
+      "return InvalidScenarioException when invalid scenario is supplied" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-tax", "HAPPY")
         result.map(_ shouldBe new InvalidScenarioException("HAPPY"))
       }
     }
