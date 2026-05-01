@@ -85,6 +85,10 @@ paths:
             examples:
               happy-path-1:
                 $ref: '#/components/examples/requestHappyPath1'
+              happy-path-2:
+                $ref: '#/components/examples/requestHappyPath404'
+              unhappy-path-500:
+                $ref: '#/components/examples/requestUnhappyPath500'
         required: true
       responses:
         '201':
@@ -97,6 +101,10 @@ paths:
               examples:
                 happy-path-1:
                   $ref: '#/components/examples/childBenefitEntitlementResponseHappyPath1'
+                happy-path-2:
+                  $ref: '#/components/examples/childBenefitEntitlementResponseHappyPath404'
+                unhappy-path-500:
+                  $ref: '#/components/examples/childBenefitEntitlementResponseUnhappyPath500'
       deprecated: false
       security:
         - application-restricted: [ ]
@@ -257,6 +265,14 @@ components:
       description: Payload for scenario HAPPY_PATH_2
       value:
         scenario: HAPPY_PATH_2
+    requestHappyPath404:
+      description: Payload for scenario HAPPY_PATH_2
+      value:
+        scenario: HAPPY_PATH_2
+    requestUnhappyPath500:
+      description: Payload for scenario UNHAPPY_PATH_500
+      value:
+        scenario: UNHAPPY_PATH_500
     benefitsResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -287,7 +303,17 @@ components:
     childBenefitEntitlementResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1, showing an amount of child benefit entitlement.
       value:
-        childBenefitEntitlement: 215.49
+        expectedStatus: 200
+        expectedJson:
+          childBenefitEntitlement: 215.49
+    childBenefitEntitlementResponseHappyPath404:
+      description: Response for scenario HAPPY_PATH_2.
+      value:
+        expectedStatus: 404
+    childBenefitEntitlementResponseUnhappyPath500:
+      description: Response for scenario UNHAPPY_PATH_500.
+      value:
+        expectedStatus: 500
     employmentsResponseHappyPath1:
       description: Response for scenario HAPPY_PATH_1 with all fields present
       value:
@@ -543,6 +569,18 @@ components:
         - HAPPY_PATH_2
       type: string
       description: Happy path test scenario with only mandatory fields
+    happy404Scenario:
+      title: happy404Scenario
+      enum:
+        - HAPPY_PATH_2
+      type: string
+      description: Happy path test scenario for HTTP 404 response
+    unhappy500Scenario:
+      title: unhappy500Scenario
+      enum:
+        - UNHAPPY_PATH_500
+      type: string
+      description: Unhappy path test scenario for HTTP 500 response
     individualPayeTestSupportSaBenefitsAnnualSummaryRequest:
       title: individualPayeTestSupportSaBenefitsAnnualSummaryRequest
       type: object
@@ -572,16 +610,31 @@ components:
         scenario:
           oneOf:
             - $ref: '#/components/schemas/firstScenario'
+            - $ref: '#/components/schemas/happy404Scenario'
+            - $ref: '#/components/schemas/unhappy500Scenario'
           description: The scenario for which to create Child Benefit entitlement test data.
       description: Create Child Benefit entitlement test data request
     individualPayeTestSupportChildBenefitEntitlementResponse:
-      title: childBenefitEntitlement
+      title: individualPayeTestSupportChildBenefitEntitlementResponse
+      type: object
       required:
-        - childBenefitEntitlement
-      type: number
-      description: The amount of Child Benefit entitlement.
-      example:
-        214.12
+        - expectedStatus
+      properties:
+        expectedStatus:
+          type: number
+          description: The HTTP response status code that should be expected from the [Individual Benefits API](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-benefits) in the specified scenario.
+          example:
+            200
+        expectedJson:
+          type: object
+          required:
+            - childBenefitEntitlement
+          properties:
+            childBenefitEntitlement:
+              type: number
+              description: The amount of Child Benefit entitlement.
+              example:
+                450.99
     individualPayeTestSupportSaEmploymentsAnnualSummaryRequest:
       title: individualPayeTestSupportSaEmploymentsAnnualSummaryRequest
       type: object
