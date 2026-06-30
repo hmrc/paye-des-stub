@@ -25,4 +25,7 @@ class AppConfig @Inject() (val servicesConfig: ServicesConfig) {
 
   lazy val hicbcFeatureEnpointsEnabled: Boolean = servicesConfig.getBoolean("hicbc.feature.endpointsEnabled")
   lazy val hicbcFeatureVersion: String          = servicesConfig.getString("hicbc.feature.version")
+
+  lazy val wfpaFeatureEndpointsEnabled: Boolean = servicesConfig.getBoolean("wfpa.feature.endpointsEnabled")
+  lazy val wfpaFeatureVersion: String           = servicesConfig.getString("wfpa.feature.version")
 }

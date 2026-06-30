@@ -1,4 +1,4 @@
-@(hicbcAPIVersion: String, hicBcAPIEndpointsEnabled: Boolean)
+@(hicbcAPIVersion: String, hicBcAPIEndpointsEnabled: Boolean, wfpaAPIVersion: String, wfpaEndpointsEnabled: Boolean)
 {
   "api": {
     "name": "Individual PAYE Test Support",
@@ -17,8 +17,8 @@
         "endpointsEnabled": @hicBcAPIEndpointsEnabled
       },
       { "version": "2.1",
-        "status": "ALPHA",
-        "endpointsEnabled": false
+        "status": "@wfpaAPIVersion",
+        "endpointsEnabled": @wfpaEndpointsEnabled
       }
     ]
   }
