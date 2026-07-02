@@ -15,11 +15,6 @@
         "version": "2.0",
         "status": "@hicbcAPIVersion",
         "endpointsEnabled": @hicBcAPIEndpointsEnabled
-      }@if(wfpaEndpointsEnabled) {,
-      { "version": "2.1",
-        "status": "@wfpaAPIVersion",
-        "endpointsEnabled": @wfpaEndpointsEnabled
-      }
       }
     ]
   }
