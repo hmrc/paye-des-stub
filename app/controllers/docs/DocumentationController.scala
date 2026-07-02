@@ -29,7 +29,14 @@ class DocumentationController @Inject() (assets: Assets, cc: ControllerComponent
     extends BackendController(cc) {
 
   def definition: Action[AnyContent] = Action {
-    Ok(txt.definition(appConfig.hicbcFeatureVersion, appConfig.hicbcFeatureEnpointsEnabled))
+    Ok(
+      txt.definition(
+        appConfig.hicbcFeatureVersion,
+        appConfig.hicbcFeatureEnpointsEnabled,
+        appConfig.wfpaFeatureVersion,
+        appConfig.wfpaFeatureEndpointsEnabled
+      )
+    )
       .withHeaders(CONTENT_TYPE -> JSON)
   }
 

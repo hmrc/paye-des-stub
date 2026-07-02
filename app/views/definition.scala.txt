@@ -1,4 +1,4 @@
-@(hicbcAPIVersion: String, hicBcAPIEndpointsEnabled: Boolean)
+@(hicbcAPIVersion: String, hicBcAPIEndpointsEnabled: Boolean, wfpaAPIVersion: String, wfpaEndpointsEnabled: Boolean)
 {
   "api": {
     "name": "Individual PAYE Test Support",
