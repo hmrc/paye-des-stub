@@ -43,11 +43,14 @@ package object models {
   implicit val individualBenefitsResponse: OFormat[IndividualBenefitsResponse]           = Json.format[IndividualBenefitsResponse]
   implicit val individualChildBenefitsResponse: OFormat[IndividualChildBenefitsResponse] =
     Json.format[IndividualChildBenefitsResponse]
+  implicit val winterFuelPaymentAmountResponse: OFormat[WinterFuelPaymentAmountResponse] =
+    Json.format[WinterFuelPaymentAmountResponse]
 
   implicit val formatIndividualEmployment: OFormat[IndividualEmployment]       = Json.format[IndividualEmployment]
   implicit val formatIndividualIncome: OFormat[IndividualIncome]               = Json.format[IndividualIncome]
   implicit val formatIndividualTax: OFormat[IndividualTax]                     = Json.format[IndividualTax]
   implicit val formatIndividualBenefits: OFormat[IndividualBenefits]           = Json.format[IndividualBenefits]
   implicit val formatIndividualChildBenefits: OFormat[IndividualChildBenefits] = Json.format[IndividualChildBenefits]
+  implicit val formatWinterFuelPaymentAmount: OFormat[WinterFuelPaymentAmount] = Json.format[WinterFuelPaymentAmount]
 
 }

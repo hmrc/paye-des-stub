@@ -1,0 +1,12 @@
+{
+  "stubPayload": {
+    "deductionsSummaryDetails": [
+      {
+        "grossAmount": 0.00
+      }
+    ]
+  },
+  "postPayload": {
+    "expectedStatus": 404
+  }
+}

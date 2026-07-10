@@ -20,17 +20,17 @@ import models.*
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
-import services.{IndividualChildBenefitsSummaryService, ScenarioLoader}
-import uk.gov.hmrc.domain.SaUtr
+import services.{IndividualChildBenefitsSummaryService, ScenarioLoader, WinterFuelPaymentAmountSummaryService}
+import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class IndividualChildBenefitsController @Inject() (
+class WinterFuelPaymentAmountController @Inject() (
   val scenarioLoader: ScenarioLoader,
-  val service: IndividualChildBenefitsSummaryService,
+  val service: WinterFuelPaymentAmountSummaryService,
   val cc: ControllerComponents
 ) extends BackendController(cc)
     with HeaderValidator
@@ -38,39 +38,39 @@ class IndividualChildBenefitsController @Inject() (
 
   implicit val ec: ExecutionContext = cc.executionContext
 
-  final def find(utr: String, taxYear: String): Action[AnyContent] = Action async {
-    service.fetch(utr, taxYear) map {
+  final def find(nino: String, taxYear: String): Action[AnyContent] = Action async {
+    service.fetch(nino, taxYear) map {
       case Some(result) =>
-        result.individualChildBenefitsResponse.errorResponse match {
+        result.winterFuelPaymentAmountResponse.errorResponse match {
           case Some(errorResponse) => Status(errorResponse)
-          case None                => Ok(Json.toJson(result.individualChildBenefitsResponse))
+          case None                => Ok(Json.toJson(result.winterFuelPaymentAmountResponse))
         }
 
       case _ => NotFound
     } recover { case e =>
-      logger.error("[individualChildBenefitsController][find] An error occurred while finding test data", e)
+      logger.error("[WinterFuelPaymentAmountController][find] An error occurred while finding test data", e)
       InternalServerError
     }
   }
 
-  final def create(utr: SaUtr, taxYear: TaxYear): Action[JsValue] =
-    (cc.actionBuilder andThen validateAcceptHeader("2.0")).async(parse.json) { request =>
+  final def create(nino: Nino, taxYear: TaxYear): Action[JsValue] =
+    (cc.actionBuilder andThen validateAcceptHeader("2.1")).async(parse.json) { request =>
       given Request[JsValue] = request
       withJsonBody[CreateSummaryRequest] { (createSummaryRequest: CreateSummaryRequest) =>
         val scenario = createSummaryRequest.scenario.getOrElse("HAPPY_PATH_1")
         if (scenario.startsWith("UNHAPPY_PATH_")) {
           val errorResponseStatus             = scenario.split("_")(2).toInt
-          val individualChildBenefitsResponse =
-            IndividualChildBenefitsResponse(Nil, Some(errorResponseStatus))
+          val winterFuelPaymentAmountResponse =
+            WinterFuelPaymentAmountResponse(Nil, Some(errorResponseStatus))
           service
-            .create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
-            .map(_ => Created(Json.toJson(IndividualChildBenefitsPostResponse(expectedStatus = errorResponseStatus))))
+            .create(nino.nino, taxYear.startYr, winterFuelPaymentAmountResponse)
+            .map(_ => Created(Json.toJson(WinterFuelPaymentAmountPostResponse(expectedStatus = errorResponseStatus))))
         } else {
           for {
-            Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse) <-
-              scenarioLoader.loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", scenario)
-            _                                                                            <- service.create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
-          } yield Created(Json.toJson(individualChildBenefitsPostResponse))
+            Tuple2(winterFuelPaymentAmountResponse, winterFuelPaymentAmountPostResponse) <-
+              scenarioLoader.loadScenarioWithTransformedPayloadWFPA("winter-fuel-payment-amount", scenario)
+            _                                                                            <- service.create(nino.nino, taxYear.startYr, winterFuelPaymentAmountResponse)
+          } yield Created(Json.toJson(winterFuelPaymentAmountPostResponse))
         }
 
       } recover {

@@ -34,7 +34,7 @@ class ScenarioLoaderSpec extends AnyWordSpec with Matchers {
   private val happyPath: String = loadResource("/public/scenarios/individual-tax/HAPPY_PATH_1.json")
 
   "ScenarioLoader" when {
-    "loadScenario" should {
+    "loadScenario"                       should {
       "return Happy Path when valid scenario is supplied" in {
         val result = scenarioLoader.loadScenario[IndividualTaxResponse]("individual-tax", "HAPPY_PATH_1")
         result.map(r => r.toString shouldBe happyPath)
@@ -47,23 +47,42 @@ class ScenarioLoaderSpec extends AnyWordSpec with Matchers {
     }
     "loadScenarioWithTransformedPayload" should {
       "return Happy Path when valid scenario is supplied" in {
-        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_1")
-        val res = Await.result(result, Duration.Inf)
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", "HAPPY_PATH_1")
+        val res    = Await.result(result, Duration.Inf)
         res._1.elements.headOption shouldBe Some(IndividualChildBenefitsResponseDetail(450.99))
-        res._2.expectedJson shouldBe Some(Json.obj("childBenefitEntitlement" -> 450.99))
-        res._2.expectedStatus shouldBe 200
+        res._2.expectedJson        shouldBe Some(Json.obj("childBenefitEntitlement" -> 450.99))
+        res._2.expectedStatus      shouldBe 200
       }
       "return Happy Path when valid scenario is supplied without json payload" in {
-        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-child-benefits", "HAPPY_PATH_2")
-        val res = Await.result(result, Duration.Inf)
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", "HAPPY_PATH_2")
+        val res    = Await.result(result, Duration.Inf)
         res._1.elements.headOption shouldBe Some(IndividualChildBenefitsResponseDetail(0.00))
-        res._2.expectedJson shouldBe None
-        res._2.expectedStatus shouldBe 404        
+        res._2.expectedJson        shouldBe None
+        res._2.expectedStatus      shouldBe 404
       }
 
-      "return InvalidScenarioException when invalid scenario is supplied" in {
-        val result = scenarioLoader.loadScenarioWithTransformedPayload("individual-tax", "HAPPY")
+      "return InvalidScenarioException when invalid scenario is supplied for HICBC" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadHICBC("individual-tax", "HAPPY")
         result.map(_ shouldBe new InvalidScenarioException("HAPPY"))
+      }
+
+      "return Happy Path when valid WFP scenario is supplied" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadWFPA("winter-fuel-payment-amount", "HAPPY_PATH_1")
+        val res    = Await.result(result, Duration.Inf)
+        res._1.deductionsSummaryDetails.headOption shouldBe Some(WinterFuelPaymentAmountResponseDetail(215.67))
+        res._2.expectedJson                        shouldBe Some(Json.obj("winterFuelPaymentAmount" -> 215.67))
+        res._2.expectedStatus                      shouldBe 200
+      }
+      "return Happy Path when valid WFP scenario is supplied without json payload" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadWFPA("winter-fuel-payment-amount", "HAPPY_PATH_2")
+        val res    = Await.result(result, Duration.Inf)
+        res._1.deductionsSummaryDetails.headOption shouldBe Some(WinterFuelPaymentAmountResponseDetail(0.00))
+        res._2.expectedJson                        shouldBe None
+        res._2.expectedStatus                      shouldBe 404
+      }
+      "return InvalidScenarioException when invalid scenario is supplied for WFPA" in {
+        val result = scenarioLoader.loadScenarioWithTransformedPayloadWFPA("winter-fuel-payment-amount", "INVALID")
+        result.map(_ shouldBe new InvalidScenarioException("INVALID"))
       }
     }
   }

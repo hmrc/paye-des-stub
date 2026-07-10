@@ -16,7 +16,7 @@
 
 package services
 
-import models.{IndividualChildBenefitsPostResponse, IndividualChildBenefitsResponse, InvalidScenarioException}
+import models.{IndividualChildBenefitsPostResponse, IndividualChildBenefitsResponse, InvalidScenarioException, WinterFuelPaymentAmountPostResponse, WinterFuelPaymentAmountResponse}
 import play.api.libs.json.{JsObject, Json, Reads}
 
 import javax.inject.Singleton
@@ -36,8 +36,8 @@ class ScenarioLoader {
       Future.successful(Json.parse(resource).as[T])
     }
   }
-  
-  def loadScenarioWithTransformedPayload(
+
+  def loadScenarioWithTransformedPayloadHICBC(
     api: String,
     scenario: String
   ): Future[(IndividualChildBenefitsResponse, IndividualChildBenefitsPostResponse)] = {
@@ -45,10 +45,25 @@ class ScenarioLoader {
     if (resource == null) {
       Future.failed(new InvalidScenarioException(scenario))
     } else {
-      val jsObject                                   = Json.parse(resource).as[JsObject]
+      val jsObject                            = Json.parse(resource).as[JsObject]
       val individualChildBenefitsResponse     = (jsObject \ "stubPayload").as[IndividualChildBenefitsResponse]
       val individualChildBenefitsPostResponse = (jsObject \ "postPayload").as[IndividualChildBenefitsPostResponse]
       Future.successful(Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse))
+    }
+  }
+
+  def loadScenarioWithTransformedPayloadWFPA(
+    api: String,
+    scenario: String
+  ): Future[(WinterFuelPaymentAmountResponse, WinterFuelPaymentAmountPostResponse)] = {
+    val resource = getClass.getResourceAsStream(pathForScenario(api, scenario))
+    if (resource == null) {
+      Future.failed(new InvalidScenarioException(scenario))
+    } else {
+      val jsObject                            = Json.parse(resource).as[JsObject]
+      val winterFuelPaymentAmountResponse     = (jsObject \ "stubPayload").as[WinterFuelPaymentAmountResponse]
+      val winterFuelPaymentAmountPostResponse = (jsObject \ "postPayload").as[WinterFuelPaymentAmountPostResponse]
+      Future.successful(Tuple2(winterFuelPaymentAmountResponse, winterFuelPaymentAmountPostResponse))
     }
   }
 

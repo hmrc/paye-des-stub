@@ -25,6 +25,11 @@ case class IndividualChildBenefitsResponseDetail(child_benefit_entitlement: BigD
 case class IndividualChildBenefitsResponse(elements: Seq[IndividualChildBenefitsResponseDetail], errorResponse: Option[Int] = None) extends IndividualResponse
 case class IndividualChildBenefitsPostResponse(expectedStatus: Int, expectedJson: Option[JsObject] = None) extends IndividualResponse
 
+case class WinterFuelPaymentAmountResponseDetail(grossAmount: BigDecimal)
+case class WinterFuelPaymentAmountResponse(deductionsSummaryDetails: Seq[WinterFuelPaymentAmountResponseDetail], errorResponse: Option[Int] = None) extends IndividualResponse
+case class WinterFuelPaymentAmountPostResponse(expectedStatus: Int, expectedJson: Option[JsObject] = None) extends IndividualResponse
+
+
 object IndividualChildBenefitsResponseDetail {
   implicit val formats: Format[IndividualChildBenefitsResponseDetail] = Json.format[IndividualChildBenefitsResponseDetail]
 }
@@ -34,6 +39,17 @@ object IndividualChildBenefitsPostResponse {
 
 object IndividualChildBenefitsResponse {
   implicit val formats: Format[IndividualChildBenefitsResponse] = Json.format[IndividualChildBenefitsResponse]
+}
+
+object WinterFuelPaymentAmountResponseDetail {
+  implicit val formats: Format[WinterFuelPaymentAmountResponseDetail] = Json.format[WinterFuelPaymentAmountResponseDetail]
+}
+object WinterFuelPaymentAmountPostResponse {
+  implicit val formats: Format[WinterFuelPaymentAmountPostResponse] = Json.format[WinterFuelPaymentAmountPostResponse]
+}
+
+object WinterFuelPaymentAmountResponse {
+  implicit val formats: Format[WinterFuelPaymentAmountResponse] = Json.format[WinterFuelPaymentAmountResponse]
 }
 
 case class IndividualEmploymentResponse(employments: List[IndividualEmploymentEmployment]) extends IndividualResponse
