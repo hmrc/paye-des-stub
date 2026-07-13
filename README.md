@@ -1,7 +1,7 @@
 # PAYE DES Stub
 
 The PAYE DES Stub is a service to support stateful sandbox testing in the
-External Test environment. It stubs the behaviour of DES in order that an API microservice
+External Test environment. It stubs the behaviour of downstream in order that an API microservice
 is able to implement only a single set of routes regardless of whether it is being called
 in a test or production environment.
 
@@ -17,14 +17,18 @@ The API supports the Individual Benefits, Individual Employment, Individual Inco
 
 ## What uses this service?
 
-API microservices that make PAYE-related calls to DES which are deployed to the
-External Test environment should be configured to connect to this stub instead of a real DES.
+API microservices that make PAYE-related calls to downstream which are deployed to the
+External Test environment should be configured to connect to this stub instead of a real downstream.
 
 API microservices which this stubs behaviour for are:
 * individual-benefits
 * individual-employment
 * individual-income
 * individual-tax
+
+## Developer API
+
+https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/paye-des-stub/2.0
 
 ## Running the tests
 
@@ -113,5 +117,6 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/t
     ```
 - Ensure to uncomment the lines [here](https://github.com/hmrc/paye-des-stub/blob/main/conf/application.conf#L22-L25) in case of CORS errors
 
-### On Developer Hub
-Full documentation can be found on the [Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/paye-des-stub).
+## Licence
+
+This code is open source software licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
