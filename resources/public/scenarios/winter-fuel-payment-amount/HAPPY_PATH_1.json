@@ -1,0 +1,15 @@
+{
+  "stubPayload": {
+    "deductionsSummaryDetails": [
+      {
+        "grossAmount": 215.67
+      }
+    ]
+  },
+  "postPayload": {
+    "expectedStatus": 200,
+    "expectedJson": {
+      "winterFuelPaymentAmount": 215.67
+    }
+  }
+}
