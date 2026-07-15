@@ -76,7 +76,7 @@ class PlatformIntegrationSpec extends AnyWordSpecLike with Matchers with GuiceOn
     }
 
     "provide yaml documentation" in {
-      val result = route(app, FakeRequest(GET, "/api/conf/1.0/application.yaml")).get
+      val result = route(app, FakeRequest(GET, "/api/conf/2.1/application.yaml")).get
       status(result)        shouldBe OK
       contentAsString(result) should include("""openapi: 3.0.3
                                                 |info:

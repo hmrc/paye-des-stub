@@ -105,7 +105,7 @@ class WinterFuelPaymentAmountSpec extends BaseSpec {
     taxYear: String,
     payload: String
   ): StandaloneWSRequest#Response =
-    postEndpoint(s"sa/$nino/winter-fuel-payment-amount/annual-summary/$taxYear", payload)
+    postEndpoint(s"$nino/winter-fuel-payment-amount/annual-summary/$taxYear", payload)
 
   val deductionType                                                                                         = "Winter Payment Amount (132)"
   private def fetchWinterFuelPaymentAmountData(nino: String, taxYear: String): StandaloneWSRequest#Response =
