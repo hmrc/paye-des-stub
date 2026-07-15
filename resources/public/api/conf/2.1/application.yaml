@@ -254,7 +254,7 @@ paths:
       deprecated: false
       security:
         - application-restricted: [ ]
-  /individual-paye-test-support/sa/{nino}/winter-fuel-payment-amount/annual-summary/{taxYear}:
+  /individual-paye-test-support/{nino}/winter-fuel-payment-amount/annual-summary/{taxYear}:
     post:
       tags:
         - individual-paye-test-support
