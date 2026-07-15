@@ -14,4 +14,4 @@ GET        /self-assessment-prepop/individual/:utr/tax-summary/tax-year/:taxYear
 POST       /sa/:utr/tax/annual-summary/:taxYear                                                 controllers.IndividualTaxController.create(utr: uk.gov.hmrc.domain.SaUtr, taxYear: models.TaxYear)
 
 GET        /paye/iabd/taxpayer/:nino/tax-year/:taxYear/deductions                               controllers.WinterFuelPaymentAmountController.find(nino: String, taxYear: String)
-POST       /sa/:nino/winter-fuel-payment-amount/annual-summary/:taxYear                         controllers.WinterFuelPaymentAmountController.create(nino: uk.gov.hmrc.domain.Nino, taxYear: models.TaxYear)
+POST       /:nino/winter-fuel-payment-amount/annual-summary/:taxYear                            controllers.WinterFuelPaymentAmountController.create(nino: uk.gov.hmrc.domain.Nino, taxYear: models.TaxYear)
