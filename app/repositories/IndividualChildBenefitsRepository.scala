@@ -26,7 +26,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IndividualChildBenefitsRepository @Inject()(mongo: MongoComponent)(implicit ec: ExecutionContext)
+class IndividualChildBenefitsRepository @Inject() (mongo: MongoComponent)(implicit ec: ExecutionContext)
     extends PlayMongoRepository[IndividualChildBenefits](
       mongoComponent = mongo,
       collectionName = "individualChildBenefits",

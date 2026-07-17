@@ -62,7 +62,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
       primeResponse.status shouldBe CREATED
 
       And("I request employment data for a given utr and taxYear")
-      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2016")
+      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2017")
 
       And("The response should contain individual child benefit entitlement data")
       fetchResponse.status shouldBe OK
@@ -78,7 +78,7 @@ class IndividualChildBenefitSpec extends BaseSpec {
       primeResponse.status shouldBe CREATED
 
       And("I request child benefit entitlement data for a given utr and taxYear")
-      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2016")
+      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2017")
 
       And("The response should contain individual child benefit entitlement data")
       fetchResponse.status shouldBe OK
@@ -87,13 +87,14 @@ class IndividualChildBenefitSpec extends BaseSpec {
       "Individual child benefit entitlement summary data is returned for the given ut and taxYear when primed with a specific UNHAPPY path scenario"
     ) {
       When("I prime tax data for a given utr, taxYear and test scenario")
-      val primeResponse = primeIndividualChildBenefitsData("1111111111", "2016-17", """{"scenario":"UNHAPPY_PATH_500"}""")
+      val primeResponse =
+        primeIndividualChildBenefitsData("1111111111", "2016-17", """{"scenario":"UNHAPPY_PATH_500"}""")
 
       Then("The response should contain individual child benefit entitlement data")
       primeResponse.status shouldBe CREATED
 
-      And("I request employment data for a given utr and taxYear")
-      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2016")
+      And("I request employment data for a given utr and taxYear (END tax year)")
+      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2017")
 
       And("The response should contain individual child benefit entitlement data")
       fetchResponse.status shouldBe INTERNAL_SERVER_ERROR
