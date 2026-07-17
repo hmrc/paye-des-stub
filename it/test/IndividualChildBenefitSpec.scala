@@ -92,8 +92,8 @@ class IndividualChildBenefitSpec extends BaseSpec {
       Then("The response should contain individual child benefit entitlement data")
       primeResponse.status shouldBe CREATED
 
-      And("I request employment data for a given utr and taxYear")
-      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2016")
+      And("I request employment data for a given utr and taxYear (END tax year)")
+      val fetchResponse = fetchIndividualChildBenefitsData("1111111111", "2017")
 
       And("The response should contain individual child benefit entitlement data")
       fetchResponse.status shouldBe INTERNAL_SERVER_ERROR

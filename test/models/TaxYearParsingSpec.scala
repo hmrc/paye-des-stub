@@ -21,15 +21,21 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class TaxYearParsingSpec extends AnyWordSpec with Matchers {
 
-  "a valid TaxYear" should {
+  "a valid TaxYear (2014)" should {
     "be transformed and startYr should be 2014" in {
       TaxYear("2014-15").startYr shouldBe "2014"
     }
+    "be transformed and endYr should be 2015" in {
+      TaxYear("2014-15").endYr shouldBe "2015"
+    }
   }
 
-  "a valid TaxYear" should {
+  "a valid TaxYear (2015)" should {
     "be transformed and startYr should be 2015" in {
       TaxYear("2015-16").startYr shouldBe "2015"
+    }
+    "be transformed and endYr should be 2016" in {
+      TaxYear("2015-16").endYr shouldBe "2016"
     }
   }
 

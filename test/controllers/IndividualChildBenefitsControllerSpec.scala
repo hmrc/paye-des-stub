@@ -151,7 +151,7 @@ class IndividualChildBenefitsControllerSpec
 
       status(result)        shouldBe CREATED
       contentAsJson(result) shouldBe Json.toJson(IndividualChildBenefitsPostResponse(500))
-      verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefits500Response)
+      verify(underTest.service).create(validUtrString, taxYear.endYr, individualChildBenefits500Response)
     }
 
     "default to Happy Path Scenario 1 when no scenario is specified in the request" in new Setup {
