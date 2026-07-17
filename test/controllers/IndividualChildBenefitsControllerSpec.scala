@@ -138,7 +138,7 @@ class IndividualChildBenefitsControllerSpec
       contentAsJson(result) shouldBe Json.toJson(individualChildBenefitsPostResponse)
       verify(underTest.scenarioLoader)
         .loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", "HAPPY_PATH_1")
-      verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefitsResponse)
+      verify(underTest.service).create(validUtrString, taxYear.endYr, individualChildBenefitsResponse)
     }
     "return a created response and store the Individual Benefits summary for unhappy path" in new Setup {
       `given`(underTest.scenarioLoader.loadScenarioWithTransformedPayloadHICBC(anyString, anyString))
@@ -167,7 +167,7 @@ class IndividualChildBenefitsControllerSpec
       contentAsJson(result) shouldBe Json.toJson(individualChildBenefitsPostResponse)
       verify(underTest.scenarioLoader)
         .loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", "HAPPY_PATH_1")
-      verify(underTest.service).create(validUtrString, taxYear.startYr, individualChildBenefitsResponse)
+      verify(underTest.service).create(validUtrString, taxYear.endYr, individualChildBenefitsResponse)
     }
 
     "return an invalid server error when the repository fails" in new Setup {

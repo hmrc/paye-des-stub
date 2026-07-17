@@ -62,6 +62,7 @@ class IndividualChildBenefitsController @Inject() (
           val errorResponseStatus             = scenario.split("_")(2).toInt
           val individualChildBenefitsResponse =
             IndividualChildBenefitsResponse(Nil, Some(errorResponseStatus))
+            
           service
             .create(utr.utr, taxYear.endYr, individualChildBenefitsResponse)
             .map(_ => Created(Json.toJson(IndividualChildBenefitsPostResponse(expectedStatus = errorResponseStatus))))
@@ -69,7 +70,7 @@ class IndividualChildBenefitsController @Inject() (
           for {
             Tuple2(individualChildBenefitsResponse, individualChildBenefitsPostResponse) <-
               scenarioLoader.loadScenarioWithTransformedPayloadHICBC("individual-child-benefits", scenario)
-            _                                                                            <- service.create(utr.utr, taxYear.startYr, individualChildBenefitsResponse)
+            _                                                                            <- service.create(utr.utr, taxYear.endYr, individualChildBenefitsResponse)
           } yield Created(Json.toJson(individualChildBenefitsPostResponse))
         }
 
