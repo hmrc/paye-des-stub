@@ -48,7 +48,7 @@ To run the service locally on port `9689`:
 To test the stub endpoints for Individual Benefits:
 ```
 curl --header "Content-Type: application/json" \
-  --header "Accept: application/vnd.hmrc.1.0+json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/benefits/annual-summary/2017-18
@@ -58,16 +58,27 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/b
 To test the stub endpoints for Child Benefit Entitlement:
 ```
 curl --header "Content-Type: application/json" \
-  --header "Accept: application/vnd.hmrc.1.0+json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/child-benefit-entitlement/annual-summary/2017-18
 curl -X GET http://localhost:9689/benefits-and-credits/child-benefit/views/iv_sa_prepop_hicbc?input_utr=2234567890&input_tax_year=2018
 ```
+
+To test the stub endpoints for Winter Fuel Payment Amount:
+```
+curl --header "Content-Type: application/json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
+  --request POST \
+  --data '{ "scenario": "HAPPY_PATH_1" }' \
+  http://localhost:9689/CE123457D/winter-fuel-payment-amount/annual-summary/2025-26
+curl -X GET http://localhost:9689/paye/iabd/taxpayer/CE123457D/tax-year/2025/deductions
+```
+
 To test the stub endpoint for Individual Employment:
 ```
 curl --header "Content-Type: application/json" \
-  --header "Accept: application/vnd.hmrc.1.0+json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/employments/annual-summary/2017-18
@@ -77,7 +88,7 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/e
 To test the stub endpoint for Individual Income:
 ```
 curl --header "Content-Type: application/json" \
-  --header "Accept: application/vnd.hmrc.1.0+json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/income/annual-summary/2017-18
@@ -87,7 +98,7 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/i
 To test the stub endpoint for Individual Tax:
 ```
 curl --header "Content-Type: application/json" \
-  --header "Accept: application/vnd.hmrc.1.0+json" \
+  --header "Accept: application/vnd.hmrc.2.1+json" \
   --request POST \
   --data '{ "scenario": "HAPPY_PATH_1" }' \
   http://localhost:9689/sa/2234567890/tax/annual-summary/2017-18
@@ -100,6 +111,11 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/t
 - HAPPY_PATH_3 is an empty array
 - UNHAPPY_PATH_500 will stub to return a 500 response. Replace 500 with whatever other response you wish to stub.
 
+## STUBBING RESPONSES for Winter Fuel Payment Amount
+- HAPPY_PATH_1 is an array with one valid non-zero value
+- HAPPY_PATH_2 is an array with one zero value
+- HAPPY_PATH_3 is an empty array
+- UNHAPPY_PATH_500 will stub to return a 500 response. Replace 500 with whatever other response you wish to stub.
 
 ## Viewing Documentation
 ### Locally
@@ -109,13 +125,13 @@ curl -X GET http://localhost:9689/self-assessment-prepop/individual/2234567890/t
      ./run_local_preview_documentation.sh
     ```
 
-- Navigate to the preview page at http://localhost:9680/api-documentation/docs/openapi/preview
-- Enter the full URL path of the OpenAPI specification file with the appropriate port and version:
+  - Navigate to the preview page at http://localhost:9680/api-documentation/docs/openapi/preview
+  - Enter the full URL path of the OpenAPI specification file with the appropriate port and version:
 
-    ```
-     http://localhost:9689/api/conf/1.0/application.yaml
-    ```
-- Ensure to uncomment the lines [here](https://github.com/hmrc/paye-des-stub/blob/main/conf/application.conf#L22-L25) in case of CORS errors
+      ```
+       http://localhost:9689/api/conf/1.0/application.yaml
+      ```
+  - Ensure to uncomment the lines [here](https://github.com/hmrc/paye-des-stub/blob/main/conf/application.conf#L22-L25) in case of CORS errors
 
 ## Licence
 
