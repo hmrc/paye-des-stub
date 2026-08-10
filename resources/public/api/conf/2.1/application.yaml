@@ -428,7 +428,7 @@ components:
       value:
         expectedStatus: 200
         expectedJson:
-          winterFuelPaymentAmount: 300.00
+          winterFuelPaymentAmount: 215.67
     winterFuelPaymentAmountResponseHappyPath404:
       description: Response for scenario HAPPY_PATH_2, simulating no Winter Fuel Payment amount found for the NINO.
       value:
