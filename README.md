@@ -74,7 +74,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:9689/CE123457D/winter-fuel-payment-amount/annual-summary/2017-18
 curl -X GET http://localhost:9689/paye/iabd/taxpayer/CE123457D/tax-year/2017/deductions
 ```
-Note: unlike the other endpoints, Winter Fuel Payment is keyed by NINO, to match the HIP endpoint (API#5222). individual-benefits resolves the UTR to a NINO via citizen-details before calling it.
+**Note:** Unlike the other endpoints, Winter Fuel Payment is keyed by National Insurance number. The Individual Benefits API resolves the Unique Taxpayer Reference to a National Insurance number before calling it.
 
 To test the stub endpoint for Individual Employment:
 ```
