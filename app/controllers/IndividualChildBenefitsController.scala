@@ -54,7 +54,7 @@ class IndividualChildBenefitsController @Inject() (
   }
 
   final def create(utr: SaUtr, taxYear: TaxYear): Action[JsValue] =
-    (cc.actionBuilder andThen validateAcceptHeader(supportedVersions(1), supportedVersions(2))).async(parse.json) {
+    (cc.actionBuilder andThen validateAcceptHeader(supportedVersions*)).async(parse.json) {
       request =>
         given Request[JsValue] = request
         withJsonBody[CreateSummaryRequest] { (createSummaryRequest: CreateSummaryRequest) =>
