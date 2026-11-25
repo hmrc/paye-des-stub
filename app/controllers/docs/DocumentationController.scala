@@ -17,7 +17,6 @@
 package controllers.docs
 
 import controllers.Assets
-import controllers.config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import views.txt
@@ -25,19 +24,11 @@ import views.txt
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DocumentationController @Inject() (assets: Assets, cc: ControllerComponents, appConfig: AppConfig)
+class DocumentationController @Inject() (assets: Assets, cc: ControllerComponents)
     extends BackendController(cc) {
 
   def definition: Action[AnyContent] = Action {
-    Ok(
-      txt.definition(
-        appConfig.hicbcFeatureVersion,
-        appConfig.hicbcFeatureEnpointsEnabled,
-        appConfig.wfpaFeatureVersion,
-        appConfig.wfpaFeatureEndpointsEnabled
-      )
-    )
-      .withHeaders(CONTENT_TYPE -> JSON)
+    Ok(txt.definition()).withHeaders(CONTENT_TYPE -> JSON)
   }
 
   def specification(version: String, file: String): Action[AnyContent] =
