@@ -47,7 +47,7 @@ class IndividualIncomeController @Inject() (
 
   final def create(utr: SaUtr, taxYear: TaxYear): Action[JsValue] =
     (cc.actionBuilder andThen validateAcceptHeader(supportedVersions*)).async(parse.json) { request =>
-    given Request[JsValue] = request
+      given Request[JsValue] = request
       withJsonBody[CreateSummaryRequest] { createSummaryRequest =>
         val scenario = createSummaryRequest.scenario.getOrElse("HAPPY_PATH_1")
 
